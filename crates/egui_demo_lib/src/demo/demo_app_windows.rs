@@ -28,10 +28,10 @@ impl DemoGroup {
         Self { demos }
     }
 
-    pub fn checkboxes(&mut self, ui: &mut Ui, open: &mut BTreeSet<String>) {
+    pub fn checkboxes(&mut self, ui: &mut Ui, open: &mut BTreeSet<String>, accessible_windows: &BTreeSet<String>) {
         let Self { demos } = self;
         for demo in demos {
-            if demo.is_enabled(ui.ctx()) {
+            if demo.is_enabled(ui.ctx()) && accessible_windows.contains(demo.name()) {
                 let mut is_open = open.contains(demo.name());
                 ui.toggle_value(&mut is_open, demo.name());
                 set_open(open, demo.name(), is_open);
@@ -75,6 +75,7 @@ impl Default for DemoGroups {
                 Box::<super::paint_bezier::PaintBezier>::default(),
                 Box::<super::code_editor::CodeEditor>::default(),
                 Box::<super::code_example::CodeExample>::default(),
+                Box::<super::creative_studio::CreativeStudio>::default(),
                 Box::<super::dancing_strings::DancingStrings>::default(),
                 Box::<super::drag_and_drop::DragAndDropDemo>::default(),
                 Box::<super::extra_viewport::ExtraViewport>::default(),
@@ -99,6 +100,7 @@ impl Default for DemoGroups {
                 Box::<super::tooltips::Tooltips>::default(),
                 Box::<super::undo_redo::UndoRedoDemo>::default(),
                 Box::<super::widget_gallery::WidgetGallery>::default(),
+                Box::<super::ui_widgets::UiWidgets>::default(),
                 Box::<super::window_options::WindowOptions>::default(),
             ]),
             tests: DemoGroup::new(vec![
@@ -119,7 +121,7 @@ impl Default for DemoGroups {
 }
 
 impl DemoGroups {
-    pub fn checkboxes(&mut self, ui: &mut Ui, open: &mut BTreeSet<String>) {
+    pub fn checkboxes(&mut self, ui: &mut Ui, open: &mut BTreeSet<String>, accessible_windows: &BTreeSet<String>) {
         let Self {
             about,
             demos,
@@ -127,14 +129,16 @@ impl DemoGroups {
         } = self;
 
         {
-            let mut is_open = open.contains(about.name());
-            ui.toggle_value(&mut is_open, about.name());
-            set_open(open, about.name(), is_open);
+            if accessible_windows.contains(about.name()) {
+                let mut is_open = open.contains(about.name());
+                ui.toggle_value(&mut is_open, about.name());
+                set_open(open, about.name(), is_open);
+            }
         }
         ui.separator();
-        demos.checkboxes(ui, open);
+        demos.checkboxes(ui, open, accessible_windows);
         ui.separator();
-        tests.checkboxes(ui, open);
+        tests.checkboxes(ui, open, accessible_windows);
     }
 
     pub fn windows(&mut self, ctx: &Context, open: &mut BTreeSet<String>) {
@@ -157,12 +161,36 @@ impl DemoGroups {
 
 /// A menu bar in which you can select different demo windows to show.
 #[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
+#[derive(Default, Clone)]
+struct User {
+    username: String,
+    password: String,
+    accessible_windows: BTreeSet<String>,
+    is_admin: bool,
+}
+
+#[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 #[cfg_attr(feature = "serde", serde(default))]
 pub struct DemoWindows {
     #[cfg_attr(feature = "serde", serde(skip))]
     groups: DemoGroups,
 
     open: BTreeSet<String>,
+
+    #[cfg_attr(feature = "serde", serde(skip))]
+    users: Vec<User>,
+
+    #[cfg_attr(feature = "serde", serde(skip))]
+    logged_in_user: Option<String>,
+
+    #[cfg_attr(feature = "serde", serde(skip))]
+    username_input: String,
+
+    #[cfg_attr(feature = "serde", serde(skip))]
+    password_input: String,
+
+    #[cfg_attr(feature = "serde", serde(skip))]
+    user_management_open: bool,
 }
 
 impl Default for DemoWindows {
@@ -186,9 +214,82 @@ impl Default for DemoWindows {
             true,
         );
 
+        let all_windows: BTreeSet<String> = [
+            About::default().name(),
+            super::code_example::CodeExample::default().name(),
+            super::creative_studio::CreativeStudio::default().name(),
+            super::widget_gallery::WidgetGallery::default().name(),
+            super::window_options::WindowOptions::default().name(),
+            super::paint_bezier::PaintBezier::default().name(),
+            super::code_editor::CodeEditor::default().name(),
+            super::dancing_strings::DancingStrings::default().name(),
+            super::drag_and_drop::DragAndDropDemo::default().name(),
+            super::extra_viewport::ExtraViewport::default().name(),
+            super::font_book::FontBook::default().name(),
+            super::frame_demo::FrameDemo::default().name(),
+            super::highlighting::Highlighting::default().name(),
+            super::interactive_container::InteractiveContainerDemo::default().name(),
+            super::MiscDemoWindow::default().name(),
+            super::modals::Modals::default().name(),
+            super::multi_touch::MultiTouch::default().name(),
+            super::painting::Painting::default().name(),
+            super::panels::Panels::default().name(),
+            super::popups::PopupsDemo::default().name(),
+            super::scene::SceneDemo::default().name(),
+            super::screenshot::Screenshot::default().name(),
+            super::scrolling::Scrolling::default().name(),
+            super::sliders::Sliders::default().name(),
+            super::strip_demo::StripDemo::default().name(),
+            super::table_demo::TableDemo::default().name(),
+            super::text_edit::TextEditDemo::default().name(),
+            super::text_layout::TextLayoutDemo::default().name(),
+            super::tooltips::Tooltips::default().name(),
+            super::undo_redo::UndoRedoDemo::default().name(),
+            super::ui_widgets::UiWidgets::default().name(),
+        ]
+        .iter()
+        .map(|s| s.to_string())
+        .collect();
+
+        let users = vec![
+            User {
+                username: "admin".to_owned(),
+                password: "admin".to_owned(),
+                accessible_windows: all_windows,
+                is_admin: true,
+            },
+            User {
+                username: "user1".to_owned(),
+                password: "password".to_owned(),
+                accessible_windows: [
+                    super::widget_gallery::WidgetGallery::default().name().to_owned(),
+                    About::default().name().to_owned(),
+                ]
+                .into_iter()
+                .collect(),
+                is_admin: false,
+            },
+            User {
+                username: "user2".to_owned(),
+                password: "password".to_owned(),
+                accessible_windows: [
+                    super::window_options::WindowOptions::default().name().to_owned(),
+                    super::code_example::CodeExample::default().name().to_owned(),
+                ]
+                .into_iter()
+                .collect(),
+                is_admin: false,
+            },
+        ];
+
         Self {
             groups: Default::default(),
             open,
+            users,
+            logged_in_user: None,
+            username_input: "".to_owned(),
+            password_input: "".to_owned(),
+            user_management_open: false,
         }
     }
 }
@@ -243,7 +344,15 @@ impl DemoWindows {
                     let font_size = 16.5;
 
                     ui.menu_button(egui::RichText::new("⏷ demos").size(font_size), |ui| {
-                        self.demo_list_ui(ui);
+                        let mut all_demos = BTreeSet::new();
+                        for demo in &self.groups.demos.demos {
+                            all_demos.insert(demo.name().to_owned());
+                        }
+                        for test in &self.groups.tests.demos {
+                            all_demos.insert(test.name().to_owned());
+                        }
+                        all_demos.insert(self.groups.about.name().to_owned());
+                        self.demo_list_ui(ui, &all_demos);
                     });
 
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
@@ -261,6 +370,28 @@ impl DemoWindows {
         });
     }
 
+    fn login_ui(&mut self, ui: &mut egui::Ui) {
+        ui.heading("Login");
+
+        ui.horizontal(|ui| {
+            ui.label("Username:");
+            ui.text_edit_singleline(&mut self.username_input);
+        });
+
+        ui.horizontal(|ui| {
+            ui.label("Password:");
+            ui.add(egui::TextEdit::singleline(&mut self.password_input).password(true));
+        });
+
+        if ui.button("Login").clicked() {
+            for user in &self.users {
+                if self.username_input == user.username && self.password_input == user.password {
+                    self.logged_in_user = Some(user.username.clone());
+                }
+            }
+        }
+    }
+
     fn desktop_ui(&mut self, ctx: &Context) {
         egui::SidePanel::right("egui_demo_panel")
             .resizable(false)
@@ -274,19 +405,26 @@ impl DemoWindows {
 
                 ui.separator();
 
-                use egui::special_emojis::GITHUB;
-                ui.hyperlink_to(
-                    format!("{GITHUB} egui on GitHub"),
-                    "https://github.com/emilk/egui",
-                );
-                ui.hyperlink_to(
-                    "@ernerfeldt.bsky.social",
-                    "https://bsky.app/profile/ernerfeldt.bsky.social",
-                );
+                if let Some(username) = self.logged_in_user.clone() {
+                    let user = self.users.iter().find(|u| u.username == username).unwrap().clone();
+                    ui.label(format!("Welcome, {}", username));
 
-                ui.separator();
+                    if user.is_admin {
+                        if ui.button("User Management").clicked() {
+                            self.user_management_open = true;
+                        }
+                    }
 
-                self.demo_list_ui(ui);
+                    if ui.button("Logout").clicked() {
+                        self.logged_in_user = None;
+                        self.username_input = "".to_owned();
+                        self.password_input = "".to_owned();
+                    }
+                    ui.separator();
+                    self.demo_list_ui(ui, &user.accessible_windows);
+                } else {
+                    self.login_ui(ui);
+                }
             });
 
         egui::TopBottomPanel::top("menu_bar").show(ctx, |ui| {
@@ -295,13 +433,80 @@ impl DemoWindows {
             });
         });
 
-        self.groups.windows(ctx, &mut self.open);
+        if self.logged_in_user.is_some() {
+            self.groups.windows(ctx, &mut self.open);
+        }
+
+        self.user_management_window(ctx);
     }
 
-    fn demo_list_ui(&mut self, ui: &mut egui::Ui) {
+    fn user_management_window(&mut self, ctx: &Context) {
+        let mut user_to_delete = None;
+        let mut new_user = None;
+
+        if self.user_management_open {
+            egui::Window::new("User Management")
+                .open(&mut self.user_management_open)
+                .vscroll(true)
+                .show(ctx, |ui| {
+                    ui.heading("Users");
+
+                    for (i, user) in self.users.iter_mut().enumerate() {
+                        ui.horizontal(|ui| {
+                            ui.label(&user.username);
+                            if ui.button("Delete").clicked() {
+                                user_to_delete = Some(i);
+                            }
+                        });
+
+                        let all_windows: BTreeSet<String> = self.groups.demos.demos.iter().map(|d| d.name().to_string()).collect();
+                        for window_name in all_windows {
+                            let mut enabled = user.accessible_windows.contains(&window_name);
+                            ui.checkbox(&mut enabled, &window_name);
+                            if enabled {
+                                user.accessible_windows.insert(window_name.clone());
+                            } else {
+                                user.accessible_windows.remove(&window_name);
+                            }
+                        }
+                        ui.separator();
+                    }
+
+                    ui.heading("Create New User");
+                    let mut new_username = String::new();
+                    let mut new_password = String::new();
+                    ui.horizontal(|ui| {
+                        ui.label("Username:");
+                        ui.text_edit_singleline(&mut new_username);
+                    });
+                    ui.horizontal(|ui| {
+                        ui.label("Password:");
+                        ui.text_edit_singleline(&mut new_password);
+                    });
+                    if ui.button("Create").clicked() {
+                        new_user = Some(User {
+                            username: new_username,
+                            password: new_password,
+                            accessible_windows: BTreeSet::new(),
+                            is_admin: false,
+                        });
+                    }
+                });
+        }
+
+        if let Some(i) = user_to_delete {
+            self.users.remove(i);
+        }
+
+        if let Some(user) = new_user {
+            self.users.push(user);
+        }
+    }
+
+    fn demo_list_ui(&mut self, ui: &mut egui::Ui, accessible_windows: &BTreeSet<String>) {
         ScrollArea::vertical().show(ui, |ui| {
             ui.with_layout(egui::Layout::top_down_justified(egui::Align::LEFT), |ui| {
-                self.groups.checkboxes(ui, &mut self.open);
+                self.groups.checkboxes(ui, &mut self.open, accessible_windows);
                 ui.separator();
                 if ui.button("Organize windows").clicked() {
                     ui.ctx().memory_mut(|mem| mem.reset_areas());

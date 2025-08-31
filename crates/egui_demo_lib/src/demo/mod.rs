@@ -37,6 +37,8 @@ pub mod tooltips;
 pub mod undo_redo;
 pub mod widget_gallery;
 pub mod window_options;
+pub mod ui_widgets;
+pub mod creative_studio;
 
 pub use {
     about::About, demo_app_windows::DemoWindows, misc_demo_window::MiscDemoWindow,

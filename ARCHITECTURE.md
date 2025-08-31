@@ -45,6 +45,10 @@ The demo that you can see at <https://www.egui.rs> is using `eframe` to host the
 ### `egui_demo_lib`
 Depends on `egui`.
 This contains a bunch of uses of `egui` and looks like the ui code you would write for an `egui` app.
+It includes the following demos:
+*   `widget_gallery`
+*   `ui_widgets`
+*   and many more.
 
 ### `egui_demo_app`
 Thin wrapper around `egui_demo_lib` so we can compile it to a web site or a native app executable.

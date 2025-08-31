@@ -95,6 +95,8 @@ pub enum Anchor {
 
     Clock,
 
+    PdfViewer,
+
     #[cfg(any(feature = "glow", feature = "wgpu"))]
     Custom3d,
 
@@ -111,6 +113,7 @@ impl Anchor {
             #[cfg(feature = "http")]
             Self::Http,
             Self::Clock,
+            Self::PdfViewer,
             #[cfg(any(feature = "glow", feature = "wgpu"))]
             Self::Custom3d,
             Self::Rendering,
@@ -158,7 +161,6 @@ enum Command {
 /// The state that we persist (serialize).
 #[derive(Default)]
 #[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
-#[cfg_attr(feature = "serde", serde(default))]
 pub struct State {
     demo: DemoApp,
     easy_mark_editor: EasyMarkApp,
@@ -168,6 +170,7 @@ pub struct State {
     image_viewer: crate::apps::ImageViewer,
     pub clock: FractalClockApp,
     rendering_test: ColorTestApp,
+    pdf_viewer: crate::apps::PdfViewer,
 
     selected_anchor: Anchor,
     backend_panel: super::backend_panel::BackendPanel,
@@ -238,6 +241,11 @@ impl WrapApp {
                 "🖼 Image Viewer",
                 Anchor::ImageViewer,
                 &mut self.state.image_viewer as &mut dyn eframe::App,
+            ),
+            (
+                "📄 PDF Viewer",
+                Anchor::PdfViewer,
+                &mut self.state.pdf_viewer as &mut dyn eframe::App,
             ),
         ];
 

@@ -38,6 +38,8 @@
         // specified in rust-toolchain.
         "RUSTUP_TOOLCHAIN": "stable"
     },
+    "atlascode.jira.enabled": false,
+    "atlascode.bitbucket.enabled": false,
     // Uncomment the following options and restart rust-analyzer to get it to check code behind `cfg(target_arch=wasm32)`.
     // Don't forget to put it in a comment again before committing.
     // "rust-analyzer.cargo.target": "wasm32-unknown-unknown",

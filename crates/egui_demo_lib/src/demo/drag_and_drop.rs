@@ -40,7 +40,7 @@ impl crate::Demo for DragAndDropDemo {
 
 /// What is being dragged.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-struct Location {
+pub struct Location {
     col: usize,
     row: usize,
 }

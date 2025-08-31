@@ -1,0 +1,16 @@
+
+[llm]
+model = "openrouter/moonshotai/kimi-k2"
+api_key = "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"
+base_url = "https://openrouter.ai/api/v1"
+
+[mcp]
+[[mcp.stdio_servers]]
+name = "rust-analyzer"
+command = "rust-analyzer"
+args = ["--server"]
+
+[[mcp.stdio_servers]]
+name = "cargo-helper"
+command = "cargo"
+args = ["--help"]

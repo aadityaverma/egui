@@ -1,0 +1,16 @@
+
+
+[build]
+target = "index.html"
+dist = "dist"
+
+[serve]
+address = "127.0.0.1"
+port = 8080
+
+[watch]
+watch = ["src", "index.html"]
+
+[tools]
+wasm-bindgen = "0.2"
+

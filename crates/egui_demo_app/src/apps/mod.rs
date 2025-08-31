@@ -12,6 +12,8 @@ mod http_app;
 #[cfg(feature = "image_viewer")]
 mod image_viewer;
 
+mod pdf_viewer;
+
 #[cfg(feature = "image_viewer")]
 pub use image_viewer::ImageViewer;
 
@@ -25,3 +27,5 @@ pub use fractal_clock::FractalClock;
 
 #[cfg(feature = "http")]
 pub use http_app::HttpApp;
+
+pub use pdf_viewer::PdfViewer;
