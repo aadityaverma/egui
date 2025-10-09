@@ -1,0 +1,1524 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+        <link rel="next" href="architecture/">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>Egui Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.2a3383ac.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#egui-an-easy-to-use-gui-in-pure-rust" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="Egui Docs" class="md-header__button md-logo" aria-label="Egui Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Egui Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Egui Docs" class="md-nav__button md-logo" aria-label="Egui Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Egui Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sections" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sections:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick start
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Goals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Goals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#non-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-goals
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state" class="md-nav__link">
+    <span class="md-ellipsis">
+      State
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="State">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-is-egui-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who is egui for?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integrations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Integrations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#official-integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Official integrations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3rd-party-integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      3rd party integrations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#writing-your-own-egui-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Writing your own egui integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-immediate-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why immediate mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why immediate mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantages-of-immediate-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages of immediate mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advantages of immediate mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disadvantages-of-immediate-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disadvantages of immediate mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Disadvantages of immediate mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      CPU usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      IDs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      FAQ
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FAQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#can-i-use-egui-with-non-latin-characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I use egui with non-latin characters?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-customize-the-look-of-egui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I customize the look of egui?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-use-egui-with-async" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I use egui with async?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-create-a-file-dialog" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I create a file dialog?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-about-accessibility-such-as-screen-readers" class="md-nav__link">
+    <span class="md-ellipsis">
+      What about accessibility, such as screen readers?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-difference-between-egui-and-eframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is the difference between egui and eframe?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-render-3d-stuff-in-an-egui-area" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I render 3D stuff in an egui area?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How do I render 3D stuff in an egui area?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shapecallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shape::Callback
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#render-to-texture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Render-to-texture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conventions-and-design-choices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conventions and design choices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspiration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inspiration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Name
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Credits
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="code_of_conduct/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code of Conduct
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Releases
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qwen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    QWEN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sections" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sections:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick start
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Goals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Goals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#non-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-goals
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state" class="md-nav__link">
+    <span class="md-ellipsis">
+      State
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="State">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-is-egui-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who is egui for?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integrations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Integrations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#official-integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Official integrations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3rd-party-integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      3rd party integrations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#writing-your-own-egui-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Writing your own egui integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-immediate-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why immediate mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why immediate mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantages-of-immediate-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages of immediate mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advantages of immediate mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disadvantages-of-immediate-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disadvantages of immediate mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Disadvantages of immediate mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      CPU usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      IDs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      FAQ
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FAQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#can-i-use-egui-with-non-latin-characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I use egui with non-latin characters?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-customize-the-look-of-egui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I customize the look of egui?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-use-egui-with-async" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I use egui with async?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-create-a-file-dialog" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I create a file dialog?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-about-accessibility-such-as-screen-readers" class="md-nav__link">
+    <span class="md-ellipsis">
+      What about accessibility, such as screen readers?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-difference-between-egui-and-eframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is the difference between egui and eframe?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-render-3d-stuff-in-an-egui-area" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I render 3D stuff in an egui area?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How do I render 3D stuff in an egui area?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shapecallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shape::Callback
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#render-to-texture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Render-to-texture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conventions-and-design-choices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conventions and design choices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspiration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inspiration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Name
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Credits
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="egui-an-easy-to-use-gui-in-pure-rust">🖌 egui: an easy-to-use GUI in pure Rust<a class="headerlink" href="#egui-an-easy-to-use-gui-in-pure-rust" title="Permanent link">&para;</a></h1>
+<p><a href="https://github.com/emilk/egui"><img alt="github" src="https://img.shields.io/badge/github-emilk/egui-8da0cb?logo=github" height="20"></a>
+<a href="https://crates.io/crates/egui"><img alt="Latest version" src="https://img.shields.io/crates/v/egui.svg" /></a>
+<a href="https://docs.rs/egui"><img alt="Documentation" src="https://docs.rs/egui/badge.svg" /></a>
+<a href="https://github.com/rust-secure-code/safety-dance/"><img alt="unsafe forbidden" src="https://img.shields.io/badge/unsafe-forbidden-success.svg" /></a>
+<a href="https://github.com/emilk/egui/actions/workflows/rust.yml"><img alt="Build Status" src="https://github.com/emilk/egui/workflows/Rust/badge.svg" /></a>
+<a href="https://github.com/emilk/egui/blob/main/LICENSE-MIT"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
+<a href="https://github.com/emilk/egui/blob/main/LICENSE-APACHE"><img alt="Apache" src="https://img.shields.io/badge/license-Apache-blue.svg" /></a>
+<a href="https://discord.gg/JFcEma9bJq"><img alt="Discord" src="https://img.shields.io/discord/900275882684477440?label=egui%20discord" /></a></p>
+<div align="center">
+<a href="https://www.rerun.io/"><img src="https://github.com/user-attachments/assets/78e79463-4357-461b-bbd1-31aa5ef5e1a2" width="250"></a>
+
+egui development is sponsored by [Rerun](https://www.rerun.io/), a startup building<br>
+an SDK for visualizing streams of multimodal data.
+</div>
+
+<hr />
+<p>👉 <a href="https://www.egui.rs/#demo">Click to run the web demo</a> 👈</p>
+<p>egui (pronounced "e-gooey") is a simple, fast, and highly portable immediate mode GUI library for Rust. egui runs on the web, natively, and <a href="#integrations">in your favorite game engine</a>.</p>
+<p>egui aims to be the easiest-to-use Rust GUI library, and the simplest way to make a web app in Rust.</p>
+<p>egui can be used anywhere you can draw textured triangles, which means you can easily integrate it into your game engine of choice.</p>
+<p><a href="https://github.com/emilk/egui/tree/main/crates/eframe"><code>eframe</code></a> is the official egui framework, which supports writing apps for Web, Linux, Mac, Windows, and Android.</p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">ui</span><span class="p">.</span><span class="n">heading</span><span class="p">(</span><span class="s">&quot;My egui Application&quot;</span><span class="p">);</span>
+<span class="n">ui</span><span class="p">.</span><span class="n">horizontal</span><span class="p">(</span><span class="o">|</span><span class="n">ui</span><span class="o">|</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ui</span><span class="p">.</span><span class="n">label</span><span class="p">(</span><span class="s">&quot;Your name: &quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ui</span><span class="p">.</span><span class="n">text_edit_singleline</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="n">ui</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">egui</span><span class="p">::</span><span class="n">Slider</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">age</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">..=</span><span class="mi">120</span><span class="p">).</span><span class="n">text</span><span class="p">(</span><span class="s">&quot;age&quot;</span><span class="p">));</span>
+<span class="k">if</span><span class="w"> </span><span class="n">ui</span><span class="p">.</span><span class="n">button</span><span class="p">(</span><span class="s">&quot;Increment&quot;</span><span class="p">).</span><span class="n">clicked</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">age</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">ui</span><span class="p">.</span><span class="n">label</span><span class="p">(</span><span class="fm">format!</span><span class="p">(</span><span class="s">&quot;Hello &#39;{name}&#39;, age {age}&quot;</span><span class="p">));</span>
+<span class="n">ui</span><span class="p">.</span><span class="n">image</span><span class="p">(</span><span class="n">egui</span><span class="p">::</span><span class="n">include_image</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;ferris.png&quot;</span><span class="p">));</span>
+</code></pre></div>
+<p><img alt="Dark mode" src="https://github.com/user-attachments/assets/3b446d29-99d8-4c82-86bb-4d8ef0516017"> &nbsp; &nbsp; <img alt="Light mode" src="https://github.com/user-attachments/assets/a5e7da93-89a8-4ba0-86b8-0fa2228a4f62" height="278"></p>
+<h2 id="sections">Sections:<a class="headerlink" href="#sections" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#example">Example</a></li>
+<li><a href="#quick-start">Quick start</a></li>
+<li><a href="#demo">Demo</a></li>
+<li><a href="#goals">Goals</a></li>
+<li><a href="#state">State / features</a></li>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#who-is-egui-for">Who is egui for?</a></li>
+<li><a href="#integrations">Integrations</a></li>
+<li><a href="#why-immediate-mode">Why immediate mode</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="#other">Other</a></li>
+<li><a href="#credits">Credits</a></li>
+</ul>
+<p>(<a href="https://github.com/Re-Ch-Love/egui-doc-cn/blob/main/README_zh-hans.md">egui 的中文翻译文档 / chinese translation</a>)</p>
+<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<p>There are simple examples in <a href="https://github.com/emilk/egui/blob/main/examples/">the <code>examples/</code> folder</a>. If you want to write a web app, then go to <a href="https://github.com/emilk/eframe_template/">https://github.com/emilk/eframe_template/</a> and follow the instructions. The official docs are at <a href="https://docs.rs/egui">https://docs.rs/egui</a>. For inspiration and more examples, check out the <a href="https://www.egui.rs/#demo">the egui web demo</a> and follow the links in it to its source code.</p>
+<p>If you want to integrate egui into an existing engine, go to the <a href="#integrations">Integrations</a> section.</p>
+<p>If you have questions, use <a href="https://github.com/emilk/egui/discussions">GitHub Discussions</a>. There is also <a href="https://discord.gg/JFcEma9bJq">an egui discord server</a>. If you want to contribute to egui, please read the <a href="https://github.com/emilk/egui/blob/main/CONTRIBUTING.md">Contributing Guidelines</a>.</p>
+<h2 id="demo">Demo<a class="headerlink" href="#demo" title="Permanent link">&para;</a></h2>
+<p><a href="https://www.egui.rs/#demo">Click to run egui web demo</a> (works in any browser with Wasm and WebGL support). Uses <a href="https://github.com/emilk/egui/tree/main/crates/eframe"><code>eframe</code></a>.</p>
+<p>To test the demo app locally, run <code>cargo run --release -p egui_demo_app</code>.</p>
+<p>The native backend is <a href="https://github.com/emilk/egui/tree/main/crates/egui_glow"><code>egui_glow</code></a> (using <a href="https://crates.io/crates/glow"><code>glow</code></a>) and should work out-of-the-box on Mac and Windows, but on Linux you need to first run:</p>
+<p><code>sudo apt-get install -y libclang-dev libgtk-3-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libxkbcommon-dev libssl-dev</code></p>
+<p>On Fedora Rawhide you need to run:</p>
+<p><code>dnf install clang clang-devel clang-tools-extra libxkbcommon-devel pkg-config openssl-devel libxcb-devel gtk3-devel atk fontconfig-devel</code></p>
+<p><strong>NOTE</strong>: This is just for the demo app - egui itself is completely platform agnostic!</p>
+<h2 id="goals">Goals<a class="headerlink" href="#goals" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The easiest to use GUI library</li>
+<li>Responsive: target 60 Hz in debug build</li>
+<li>Friendly: difficult to make mistakes, and shouldn't panic</li>
+<li>Portable: the same code works on the web and as a native app</li>
+<li>Easy to integrate into any environment</li>
+<li>A simple 2D graphics API for custom painting (<a href="https://docs.rs/epaint"><code>epaint</code></a>).</li>
+<li>Pure immediate mode: no callbacks</li>
+<li>Extensible: <a href="https://github.com/emilk/egui/blob/main/crates/egui_demo_lib/src/demo/toggle_switch.rs">easy to write your own widgets for egui</a></li>
+<li>Modular: You should be able to use small parts of egui and combine them in new ways</li>
+<li>Safe: there is no <code>unsafe</code> code in egui</li>
+<li>Minimal dependencies</li>
+</ul>
+<p>egui is <em>not</em> a framework. egui is a library you call into, not an environment you program for.</p>
+<p><strong>NOTE</strong>: egui does not claim to have reached all these goals yet! egui is still work in progress.</p>
+<h3 id="non-goals">Non-goals<a class="headerlink" href="#non-goals" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Become the most powerful GUI library</li>
+<li>Native looking interface</li>
+</ul>
+<h2 id="state">State<a class="headerlink" href="#state" title="Permanent link">&para;</a></h2>
+<p>egui is in active development. It works well for what it does, but it lacks many features and the interfaces are still in flux. New releases will have breaking changes.</p>
+<p>Still, egui can be used to create professional looking applications, like <a href="https://app.rerun.io/">the Rerun Viewer</a>.</p>
+<h3 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Widgets: label, text button, hyperlink, checkbox, radio button, slider, draggable value, text editing, color picker, spinner</li>
+<li>Images</li>
+<li>Layouts: horizontal, vertical, columns, automatic wrapping</li>
+<li>Text editing: multiline, copy/paste, undo, emoji supports</li>
+<li>Windows: move, resize, name, minimize and close. Automatically sized and positioned.</li>
+<li>Regions: resizing, vertical scrolling, collapsing headers (sections), panels</li>
+<li>Rendering: Anti-aliased rendering of lines, circles, text and convex polygons.</li>
+<li>Tooltips on hover</li>
+<li>Accessibility via <a href="https://accesskit.dev/">AccessKit</a></li>
+<li>Label text selection</li>
+<li>And more!</li>
+</ul>
+<p>Check out the <a href="https://github.com/emilk/egui/wiki/3rd-party-egui-crates">3rd party egui crates wiki</a> for even more
+widgets and features, maintained by the community.</p>
+<p><img src="https://github.com/user-attachments/assets/13e73b76-e456-42bd-8ec9-220802834268" width="50%"></p>
+<p>Light Theme:</p>
+<p><img src="https://github.com/user-attachments/assets/2e38972c-a444-4894-b32f-47a2719cf369" width="50%"></p>
+<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
+<p><code>egui</code> has a minimal set of default dependencies.
+Heavier dependencies are kept out of <code>egui</code>, even as opt-in.
+All code in <code>egui</code> is Wasm-friendly (even outside a browser).</p>
+<p>To load images into <code>egui</code> you can use the official <a href="https://github.com/emilk/egui/tree/main/crates/egui_extras"><code>egui_extras</code></a> crate.</p>
+<p><a href="https://github.com/emilk/egui/tree/main/crates/eframe"><code>eframe</code></a> on the other hand has a lot of dependencies, including <a href="https://crates.io/crates/winit"><code>winit</code></a>, <a href="https://crates.io/crates/image"><code>image</code></a>, graphics crates, clipboard crates, etc,</p>
+<h2 id="who-is-egui-for">Who is egui for?<a class="headerlink" href="#who-is-egui-for" title="Permanent link">&para;</a></h2>
+<p>egui aims to be the best choice when you want a simple way to create a GUI, or you want to add a GUI to a game engine.</p>
+<p>If you are not using Rust, egui is not for you. If you want a GUI that looks native, egui is not for you. If you want something that doesn't break when you upgrade it, egui isn't for you (yet).</p>
+<p>But if you are writing something interactive in Rust that needs a simple GUI, egui may be for you.</p>
+<h2 id="integrations">Integrations<a class="headerlink" href="#integrations" title="Permanent link">&para;</a></h2>
+<p>egui is built to be easy to integrate into any existing game engine or platform you are working on.
+egui itself doesn't know or care on what OS it is running or how to render things to the screen - that is the job of the egui integration.</p>
+<p>An integration needs to do the following each frame:</p>
+<ul>
+<li><strong>Input</strong>: Gather input (mouse, touches, keyboard, screen size, etc) and give it to egui</li>
+<li>Call into the application GUI code</li>
+<li><strong>Output</strong>: Handle egui output (cursor changes, paste, texture allocations, …)</li>
+<li><strong>Painting</strong>: Render the triangle mesh egui produces (see <a href="https://github.com/emilk/egui/blob/main/crates/egui_glow/src/painter.rs">OpenGL example</a>)</li>
+</ul>
+<h3 id="official-integrations">Official integrations<a class="headerlink" href="#official-integrations" title="Permanent link">&para;</a></h3>
+<p>These are the official egui integrations:</p>
+<ul>
+<li><a href="https://github.com/emilk/egui/tree/main/crates/eframe"><code>eframe</code></a> for compiling the same app to web/wasm and desktop/native. Uses <code>egui-winit</code> and <code>egui_glow</code> or <code>egui-wgpu</code></li>
+<li><a href="https://github.com/emilk/egui/tree/main/crates/egui_glow"><code>egui_glow</code></a> for rendering egui with <a href="https://github.com/grovesNL/glow">glow</a> on native and web, and for making native apps</li>
+<li><a href="https://github.com/emilk/egui/tree/main/crates/egui-wgpu"><code>egui-wgpu</code></a> for <a href="https://crates.io/crates/wgpu">wgpu</a> (WebGPU API)</li>
+<li><a href="https://github.com/emilk/egui/tree/main/crates/egui-winit"><code>egui-winit</code></a> for integrating with <a href="https://github.com/rust-windowing/winit">winit</a></li>
+</ul>
+<h3 id="3rd-party-integrations">3rd party integrations<a class="headerlink" href="#3rd-party-integrations" title="Permanent link">&para;</a></h3>
+<p>Check the wiki to find <a href="https://github.com/emilk/egui/wiki/3rd-party-integrations">3rd party integrations</a>
+and <a href="https://github.com/emilk/egui/wiki/3rd-party-egui-crates">egui crates</a>.</p>
+<h3 id="writing-your-own-egui-integration">Writing your own egui integration<a class="headerlink" href="#writing-your-own-egui-integration" title="Permanent link">&para;</a></h3>
+<p>Missing an integration for the thing you're working on? Create one, it's easy!
+See <a href="https://docs.rs/egui/latest/egui/#integrating-with-egui">https://docs.rs/egui/latest/egui/#integrating-with-egui</a>.</p>
+<h2 id="why-immediate-mode">Why immediate mode<a class="headerlink" href="#why-immediate-mode" title="Permanent link">&para;</a></h2>
+<p><code>egui</code> is an <a href="https://en.wikipedia.org/wiki/Immediate_mode_GUI">immediate mode GUI library</a>, as opposed to a <em>retained mode</em> GUI library. The difference between retained mode and immediate mode is best illustrated with the example of a button: In a retained GUI you create a button, add it to some UI and install some on-click handler (callback). The button is retained in the UI, and to change the text on it you need to store some sort of reference to it. By contrast, in immediate mode you show the button and interact with it immediately, and you do so every frame (e.g. 60 times per second). This means there is no need for any on-click handler, nor to store any reference to it. In <code>egui</code> this looks like this: <code>if ui.button("Save file").clicked() { save(file); }</code>.</p>
+<p>A more detailed description of immediate mode can be found <a href="https://docs.rs/egui/latest/egui/#understanding-immediate-mode">in the <code>egui</code> docs</a>.</p>
+<p>There are advantages and disadvantages to both systems.</p>
+<p>The short of it is this: immediate mode GUI libraries are easier to use, but less powerful.</p>
+<h3 id="advantages-of-immediate-mode">Advantages of immediate mode<a class="headerlink" href="#advantages-of-immediate-mode" title="Permanent link">&para;</a></h3>
+<h4 id="usability">Usability<a class="headerlink" href="#usability" title="Permanent link">&para;</a></h4>
+<p>The main advantage of immediate mode is that the application code becomes vastly simpler:</p>
+<ul>
+<li>You never need to have any on-click handlers and callbacks that disrupts your code flow.</li>
+<li>You don't have to worry about a lingering callback calling something that is gone.</li>
+<li>Your GUI code can easily live in a simple function (no need for an object just for the UI).</li>
+<li>You don't have to worry about app state and GUI state being out-of-sync (i.e. the GUI showing something outdated), because the GUI isn't storing any state - it is showing the latest state <em>immediately</em>.</li>
+</ul>
+<p>In other words, a whole lot of code, complexity and bugs are gone, and you can focus your time on something more interesting than writing GUI code.</p>
+<h3 id="disadvantages-of-immediate-mode">Disadvantages of immediate mode<a class="headerlink" href="#disadvantages-of-immediate-mode" title="Permanent link">&para;</a></h3>
+<h4 id="layout">Layout<a class="headerlink" href="#layout" title="Permanent link">&para;</a></h4>
+<p>The main disadvantage of immediate mode is it makes layout more difficult. Say you want to show a small dialog window in the center of the screen. To position the window correctly the GUI library must first know the size of it. To know the size of the window the GUI library must first layout the contents of the window. In retained mode this is easy: the GUI library does the window layout, positions the window, then checks for interaction ("was the OK button clicked?").</p>
+<p>In immediate mode you run into a paradox: to know the size of the window, we must do the layout, but the layout code also checks for interaction ("was the OK button clicked?") and so it needs to know the window position <em>before</em> showing the window contents. This means we must decide where to show the window <em>before</em> we know its size!</p>
+<p>This is a fundamental shortcoming of immediate mode GUIs, and any attempt to resolve it comes with its own downsides.</p>
+<p>One workaround is to store the size and use it the next frame. This produces a frame-delay for the correct layout, producing occasional flickering the first frame something shows up. <code>egui</code> does this for some things such as windows and grid layouts.</p>
+<p>The "first-frame jitter" can be covered up with an extra <em>pass</em>, which egui supports via <code>Context::request_discard</code>.
+The downside of this is the added CPU cost of a second pass, so egui only does this in very rare circumstances (the majority of frames are single-pass).</p>
+<p>For "atomic" widgets (e.g. a button) <code>egui</code> knows the size before showing it, so centering buttons, labels etc is possible in <code>egui</code> without any special workarounds.</p>
+<p>See <a href="https://github.com/emilk/egui/issues/4378">this issue</a> for more.</p>
+<h4 id="cpu-usage">CPU usage<a class="headerlink" href="#cpu-usage" title="Permanent link">&para;</a></h4>
+<p>Since an immediate mode GUI does a full layout each frame, the layout code needs to be quick. If you have a very complex GUI this can tax the CPU. In particular, having a very large UI in a scroll area (with very long scrollback) can be slow, as the content needs to be laid out each frame.</p>
+<p>If you design the GUI with this in mind and refrain from huge scroll areas (or only lay out the part that is in view) then the performance hit is generally pretty small. For most cases you can expect <code>egui</code> to take up 1-2 ms per frame, but <code>egui</code> still has a lot of room for optimization (it's not something I've focused on yet). <code>egui</code> only repaints when there is interaction (e.g. mouse movement) or an animation, so if your app is idle, no CPU is wasted.</p>
+<p>If your GUI is highly interactive, then immediate mode may actually be more performant compared to retained mode. Go to any web page and resize the browser window, and you'll notice that the browser is very slow to do the layout and eats a lot of CPU doing it. Resize a window in <code>egui</code> by contrast, and you'll get smooth 60 FPS at no extra CPU cost.</p>
+<h4 id="ids">IDs<a class="headerlink" href="#ids" title="Permanent link">&para;</a></h4>
+<p>There are some GUI state that you want the GUI library to retain, even in an immediate mode library such as <code>egui</code>. This includes position and sizes of windows and how far the user has scrolled in some UI. In these cases you need to provide <code>egui</code> with a seed of a unique identifier (unique within the parent UI). For instance: by default <code>egui</code> uses the window titles as unique IDs to store window positions. If you want two windows with the same name (or one window with a dynamic name) you must provide some other ID source to <code>egui</code> (some unique integer or string).</p>
+<p><code>egui</code> also needs to track which widget is being interacted with (e.g. which slider is being dragged). <code>egui</code> uses unique IDs for this as well, but in this case the IDs are automatically generated, so there is no need for the user to worry about it. In particular, having two buttons with the same name is no problem (this is in contrast with <a href="https://github.com/ocornut/imgui"><code>Dear ImGui</code></a>).</p>
+<p>Overall, ID handling is a rare inconvenience, and not a big disadvantage.</p>
+<h2 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h2>
+<p>Also see <a href="https://github.com/emilk/egui/discussions/categories/q-a">GitHub Discussions</a>.</p>
+<h3 id="can-i-use-egui-with-non-latin-characters">Can I use <code>egui</code> with non-latin characters?<a class="headerlink" href="#can-i-use-egui-with-non-latin-characters" title="Permanent link">&para;</a></h3>
+<p>Yes! But you need to install your own font (<code>.ttf</code> or <code>.otf</code>) using <a href="https://docs.rs/egui/latest/egui/struct.Context.html#method.set_fonts"><code>Context::set_fonts</code></a>.</p>
+<h3 id="can-i-customize-the-look-of-egui">Can I customize the look of egui?<a class="headerlink" href="#can-i-customize-the-look-of-egui" title="Permanent link">&para;</a></h3>
+<p>Yes! You can customize the colors, spacing, fonts and sizes of everything using <code>Context::set_style</code>.</p>
+<p>This is not yet as powerful as say CSS, <a href="https://github.com/emilk/egui/issues/3284">but this is going to improve</a>.</p>
+<p>Here is an example (from https://github.com/a-liashenko/TinyPomodoro):</p>
+<p><img src="https://github.com/user-attachments/assets/e6107237-2547-41d6-996b-9a20ae0345ab" width="50%"></p>
+<h3 id="how-do-i-use-egui-with-async">How do I use egui with <code>async</code>?<a class="headerlink" href="#how-do-i-use-egui-with-async" title="Permanent link">&para;</a></h3>
+<p>If you call <code>.await</code> in your GUI code, the UI will freeze, which is very bad UX. Instead, keep the GUI thread non-blocking and communicate with any concurrent tasks (<code>async</code> tasks or other threads) with something like:
+* Channels (e.g. <a href="https://doc.rust-lang.org/std/sync/mpsc/fn.channel.html"><code>std::sync::mpsc::channel</code></a>). Make sure to use <a href="https://doc.rust-lang.org/std/sync/mpsc/struct.Receiver.html#method.try_recv"><code>try_recv</code></a> so you don't block the gui thread!
+* <code>Arc&lt;Mutex&lt;Value&gt;&gt;</code> (background thread sets a value; GUI thread reads it)
+* <a href="https://docs.rs/poll-promise"><code>poll_promise::Promise</code></a>
+* <a href="https://docs.rs/eventuals/latest/eventuals/struct.Eventual.html"><code>eventuals::Eventual</code></a>
+* <a href="https://docs.rs/tokio/latest/tokio/sync/watch/fn.channel.html"><code>tokio::sync::watch::channel</code></a></p>
+<h3 id="how-do-i-create-a-file-dialog">How do I create a file dialog?<a class="headerlink" href="#how-do-i-create-a-file-dialog" title="Permanent link">&para;</a></h3>
+<p>The async version of <a href="https://docs.rs/rfd/latest/rfd/">rfd</a> supports both native and Wasm. See example app here https://github.com/woelper/egui_pick_file which also has a demo available via <a href="https://woelper.github.io/egui_pick_file/">gitub pages</a>.</p>
+<h3 id="what-about-accessibility-such-as-screen-readers">What about accessibility, such as screen readers?<a class="headerlink" href="#what-about-accessibility-such-as-screen-readers" title="Permanent link">&para;</a></h3>
+<p>egui includes optional support for <a href="https://accesskit.dev/">AccessKit</a>, which currently implements the native accessibility APIs on Windows and macOS. This feature is enabled by default in eframe. For platforms that AccessKit doesn't yet support, including web, there is an experimental built-in screen reader; in <a href="https://www.egui.rs/#demo">the web demo</a> you can enable it in the "Backend" tab.</p>
+<p>The original discussion of accessibility in egui is at <a href="https://github.com/emilk/egui/issues/167">https://github.com/emilk/egui/issues/167</a>. Now that AccessKit support is merged, providing a strong foundation for future accessibility work, please open new issues on specific accessibility problems.</p>
+<h3 id="what-is-the-difference-between-egui-and-eframe">What is the difference between <a href="https://docs.rs/egui">egui</a> and <a href="https://github.com/emilk/egui/tree/main/crates/eframe">eframe</a>?<a class="headerlink" href="#what-is-the-difference-between-egui-and-eframe" title="Permanent link">&para;</a></h3>
+<p><code>egui</code> is a 2D user interface library for laying out and interacting with buttons, sliders, etc.
+<code>egui</code> has no idea if it is running on the web or natively, and does not know how to collect input or show things on screen.
+That is the job of <em>the integration</em> or <em>backend</em>.</p>
+<p>It is common to use <code>egui</code> from a game engine (using e.g. <a href="https://docs.rs/bevy_egui"><code>bevy_egui</code></a>),
+but you can also use <code>egui</code> stand-alone using <code>eframe</code>. <code>eframe</code> has integration for web and native, and handles input and rendering.
+The <em>frame</em> in <code>eframe</code> stands both for the frame in which your egui app resides and also for "framework" (<code>eframe</code> is a framework, <code>egui</code> is a library).</p>
+<h3 id="how-do-i-render-3d-stuff-in-an-egui-area">How do I render 3D stuff in an egui area?<a class="headerlink" href="#how-do-i-render-3d-stuff-in-an-egui-area" title="Permanent link">&para;</a></h3>
+<p>There are multiple ways to combine egui with 3D. The simplest way is to use a 3D library and have egui sit on top of the 3D view. See for instance <a href="https://github.com/mvlabat/bevy_egui"><code>bevy_egui</code></a> or <a href="https://github.com/asny/three-d"><code>three-d</code></a>.</p>
+<p>If you want to embed 3D into an egui view there are two options:</p>
+<h4 id="shapecallback"><code>Shape::Callback</code><a class="headerlink" href="#shapecallback" title="Permanent link">&para;</a></h4>
+<p>Example:
+* <a href="https://github.com/emilk/egui/blob/main/examples/custom_3d_glow/src/main.rs">https://github.com/emilk/egui/blob/main/examples/custom_3d_glow/src/main.rs</a></p>
+<p><code>Shape::Callback</code> will call your code when egui gets painted, to show anything using whatever the background rendering context is. When using <a href="https://github.com/emilk/egui/tree/main/crates/eframe"><code>eframe</code></a> this will be <a href="https://github.com/grovesNL/glow"><code>glow</code></a>. Other integrations will give you other rendering contexts, if they support <code>Shape::Callback</code> at all.</p>
+<h4 id="render-to-texture">Render-to-texture<a class="headerlink" href="#render-to-texture" title="Permanent link">&para;</a></h4>
+<p>You can also render your 3D scene to a texture and display it using <a href="https://docs.rs/egui/latest/egui/struct.Ui.html#method.image"><code>ui.image(…)</code></a>. You first need to convert the native texture to an <a href="https://docs.rs/egui/latest/egui/enum.TextureId.html"><code>egui::TextureId</code></a>, and how to do this depends on the integration you use.</p>
+<p>Examples:
+* Using <a href="https://github.com/not-fl3/egui-miniquad"><code>egui-miniquad</code></a>: https://github.com/not-fl3/egui-miniquad/blob/master/examples/render_to_egui_image.rs
+* Using <a href="https://github.com/emilk/egui/tree/main/crates/eframe"><code>eframe</code></a> + <a href="https://vtk.org/"><code>VTK (C++)</code></a>: https://github.com/Gerharddc/vtk-egui-demo</p>
+<h2 id="other">Other<a class="headerlink" href="#other" title="Permanent link">&para;</a></h2>
+<h3 id="conventions-and-design-choices">Conventions and design choices<a class="headerlink" href="#conventions-and-design-choices" title="Permanent link">&para;</a></h3>
+<p>All coordinates are in screen space coordinates, with (0, 0) in the top left corner</p>
+<p>All coordinates are in logical "points" which may consist of many physical pixels.</p>
+<p>All colors have premultiplied alpha, unless otherwise stated.</p>
+<p>egui uses the builder pattern for construction widgets. For instance: <code>ui.add(Label::new("Hello").text_color(RED));</code> I am not a big fan of the builder pattern (it is quite verbose both in implementation and in use) but until Rust has named, default arguments it is the best we can do. To alleviate some of the verbosity there are common-case helper functions, like <code>ui.label("Hello");</code>.</p>
+<p>Instead of using matching <code>begin/end</code> style function calls (which can be error prone) egui prefers to use <code>FnOnce</code> closures passed to a wrapping function. Lambdas are a bit ugly though, so I'd like to find a nicer solution to this. More discussion of this at <a href="https://github.com/emilk/egui/issues/1004#issuecomment-1001650754">https://github.com/emilk/egui/issues/1004#issuecomment-1001650754</a>.</p>
+<p>egui uses a single <code>RwLock</code> for short-time locks on each access of <code>Context</code> data. This is to leave implementation simple and transactional and allow users to run their UI logic in parallel. Instead of creating mutex guards, egui uses closures passed to a wrapping function, e.g. <code>ctx.input(|i| i.key_down(Key::A))</code>. This is to make it less likely that a user would accidentally double-lock the <code>Context</code>, which would lead to a deadlock.</p>
+<h3 id="inspiration">Inspiration<a class="headerlink" href="#inspiration" title="Permanent link">&para;</a></h3>
+<p>The one and only <a href="https://github.com/ocornut/imgui">Dear ImGui</a> is a great Immediate Mode GUI for C++ which works with many backends. That library revolutionized how I think about GUI code and turned GUI programming from something I hated to do to something I now enjoy.</p>
+<h3 id="name">Name<a class="headerlink" href="#name" title="Permanent link">&para;</a></h3>
+<p>The name of the library and the project is "egui" and pronounced as "e-gooey". Please don't write it as "EGUI".</p>
+<p>The library was originally called "Emigui", but was renamed to "egui" in 2020.</p>
+<h2 id="credits">Credits<a class="headerlink" href="#credits" title="Permanent link">&para;</a></h2>
+<p>egui author and maintainer: Emil Ernerfeldt (<a href="https://github.com/emilk">@emilk</a>).</p>
+<p>Notable contributions by:</p>
+<ul>
+<li><a href="https://github.com/n2">@n2</a>: <a href="https://github.com/emilk/egui/pull/253">Mobile web input and IME support</a></li>
+<li><a href="https://github.com/optozorax">@optozorax</a>: <a href="https://github.com/emilk/egui/pull/257">Arbitrary widget data storage</a></li>
+<li><a href="https://github.com/quadruple-output">@quadruple-output</a>: <a href="https://github.com/emilk/egui/pull/306">Multitouch</a></li>
+<li><a href="https://github.com/EmbersArc">@EmbersArc</a>: <a href="https://github.com/emilk/egui/pulls?q=+is%3Apr+author%3AEmbersArc">Plots</a></li>
+<li><a href="https://github.com/AsmPrgmC3">@AsmPrgmC3</a>: <a href="https://github.com/emilk/egui/pull/650">Proper sRGBA blending for web</a></li>
+<li><a href="https://github.com/AlexApps99">@AlexApps99</a>: <a href="https://github.com/emilk/egui/pull/685"><code>egui_glow</code></a></li>
+<li><a href="https://github.com/mankinskin">@mankinskin</a>: <a href="https://github.com/emilk/egui/pull/543">Context menus</a></li>
+<li><a href="https://github.com/KentaTheBugMaker">@KentaTheBugMaker</a>: <a href="https://github.com/emilk/egui/pull/868">Port glow painter to web</a></li>
+<li><a href="https://github.com/danielkeller">@danielkeller</a>: <a href="https://github.com/emilk/egui/pull/1050"><code>Context</code> refactor</a></li>
+<li><a href="https://github.com/MaximOsipenko">@MaximOsipenko</a>: <a href="https://github.com/emilk/egui/pull/2625"><code>Context</code> lock refactor</a></li>
+<li><a href="https://github.com/mwcampbell">@mwcampbell</a>: <a href="https://github.com/AccessKit/accesskit">AccessKit</a> <a href="https://github.com/emilk/egui/pull/2294">integration</a></li>
+<li><a href="https://github.com/hasenbanck">@hasenbanck</a>, <a href="https://github.com/s-nie">@s-nie</a>, <a href="https://github.com/Wumpf">@Wumpf</a>: <a href="https://github.com/emilk/egui/tree/main/crates/egui-wgpu"><code>egui-wgpu</code></a></li>
+<li><a href="https://github.com/jprochazk">@jprochazk</a>: <a href="https://github.com/emilk/egui/issues/3291">egui image API</a></li>
+<li>And <a href="https://github.com/emilk/egui/graphs/contributors?type=a">many more</a>.</li>
+</ul>
+<p>egui is licensed under <a href="LICENSE-MIT">MIT</a> OR <a href="LICENSE-APACHE">Apache-2.0</a>.</p>
+<ul>
+<li>The flattening algorithm for the cubic bezier curve and quadratic bezier curve is from <a href="https://docs.rs/lyon_geom/latest/lyon_geom/">lyon_geom</a></li>
+</ul>
+<p>Default fonts:</p>
+<ul>
+<li><code>emoji-icon-font.ttf</code>: <a href="https://github.com/jslegers/emoji-icon-font">Copyright (c) 2014 John Slegers</a> , MIT License</li>
+<li><code>Hack-Regular.ttf</code>: <a href="https://github.com/source-foundry/Hack">https://github.com/source-foundry/Hack</a>, <a href="https://github.com/source-foundry/Hack/blob/master/LICENSE.md">MIT Licence</a></li>
+<li><code>NotoEmoji-Regular.ttf</code>: <a href="https://google.com/get/noto">google.com/get/noto</a>, <a href="https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&amp;id=OFL">SIL Open Font License</a></li>
+<li><code>Ubuntu-Light.ttf</code> by <a href="http://www.daltonmaag.com/">Dalton Maag</a>: <a href="https://ubuntu.com/legal/font-licence">Ubuntu font licence</a></li>
+</ul>
+<hr />
+<div align="center">
+<a href="https://www.rerun.io/"><img src="https://github.com/user-attachments/assets/78e79463-4357-461b-bbd1-31aa5ef5e1a2" width="440"></a>
+
+egui development is sponsored by [Rerun](https://www.rerun.io/), a startup building<br>
+an SDK for visualizing streams of multimodal data.
+</div>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2025 16:11:34 UTC">October 9, 2025</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,910 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../code_of_conduct/">
+      
+      
+        <link rel="next" href="../releases/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>Contributing - Egui Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2a3383ac.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#contribution-guidelines" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Egui Docs" class="md-header__button md-logo" aria-label="Egui Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Egui Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Contributing
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Egui Docs" class="md-nav__button md-logo" aria-label="Egui Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Egui Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../code_of_conduct/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code of Conduct
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-contribute-to-egui" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to contribute to egui
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#discussion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discussion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filing-an-issue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filing an issue
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#making-a-pr" class="md-nav__link">
+    <span class="md-ellipsis">
+      Making a PR
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-git-lfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Working with git lfs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pr-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      PR review
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-an-integration-for-egui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating an integration for egui
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-the-web-viewer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing the web viewer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-style" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Style
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Code Style">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#good" class="md-nav__link">
+    <span class="md-ellipsis">
+      Good:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bad" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bad:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coordinate-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coordinate system
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avoid-unwrap-expect-etc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avoid unwrap, expect etc.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Releases
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qwen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    QWEN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-contribute-to-egui" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to contribute to egui
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#discussion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discussion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filing-an-issue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filing an issue
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#making-a-pr" class="md-nav__link">
+    <span class="md-ellipsis">
+      Making a PR
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-git-lfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Working with git lfs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pr-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      PR review
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-an-integration-for-egui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating an integration for egui
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-the-web-viewer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing the web viewer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-style" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Style
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Code Style">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#good" class="md-nav__link">
+    <span class="md-ellipsis">
+      Good:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bad" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bad:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coordinate-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coordinate system
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avoid-unwrap-expect-etc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avoid unwrap, expect etc.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="contribution-guidelines">Contribution Guidelines<a class="headerlink" href="#contribution-guidelines" title="Permanent link">&para;</a></h1>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p><code>egui</code> has been an on-and-off weekend project of mine since late 2018. I am grateful to any help I can get, but bear in mind that sometimes I can be slow to respond because I am busy with other things!</p>
+<p>/ Emil</p>
+<h2 id="how-to-contribute-to-egui">How to contribute to egui<a class="headerlink" href="#how-to-contribute-to-egui" title="Permanent link">&para;</a></h2>
+<p>You want to contribute to egui, but don't know how? First of all: thank you! I created a special issue just for that: <a href="https://github.com/emilk/egui/issues/3742">https://github.com/emilk/egui/issues/3742</a>. But make sure you still read this file first :)</p>
+<h2 id="discussion">Discussion<a class="headerlink" href="#discussion" title="Permanent link">&para;</a></h2>
+<p>You can ask questions, share screenshots and more at <a href="https://github.com/emilk/egui/discussions">GitHub Discussions</a>.</p>
+<p>There is an <code>egui</code> discord at <a href="https://discord.gg/vbuv9Xan65">https://discord.gg/vbuv9Xan65</a>.</p>
+<h2 id="filing-an-issue">Filing an issue<a class="headerlink" href="#filing-an-issue" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/emilk/egui/issues">Issues</a> are for bug reports and feature requests. Issues are not for asking questions (use <a href="https://github.com/emilk/egui/discussions">Discussions</a> or <a href="https://discord.gg/vbuv9Xan65">Discord</a> for that).</p>
+<p>Always make sure there is not already a similar issue to the one you are creating.</p>
+<p>If you are filing a bug, please provide a way to reproduce it.</p>
+<h2 id="making-a-pr">Making a PR<a class="headerlink" href="#making-a-pr" title="Permanent link">&para;</a></h2>
+<p>For small things, just go ahead an open a PR. For bigger things, please file an issue first (or find an existing one) and announce that you plan to work on something. That way we will avoid having several people doing double work, and you might get useful feedback on the issue before you start working.</p>
+<p>Browse through <a href="ARCHITECTURE.md"><code>ARCHITECTURE.md</code></a> to get a sense of how all pieces connects.</p>
+<p>You can test your code locally by running <code>./scripts/check.sh</code>.
+There are snapshots test that might need to be updated.
+Run the tests with <code>UPDATE_SNAPSHOTS=true cargo test --workspace --all-features</code> to update all of them.
+If CI keeps complaining about snapshots (which could happen if you don't use macOS, snapshots in CI are currently
+rendered with macOS), you can instead run <code>./scripts/update_snapshots_from_ci.sh</code> to update your local snapshots from
+the last CI run of your PR (which will download the <code>test_results</code> artifact).
+For more info about the tests see <a href="./crates/egui_kittest/README.md">egui_kittest</a>.
+Snapshots and other big files are stored with git lfs. See <a href="#working-with-git-lfs">Working with git lfs</a> for more info.
+If you see an <code>InvalidSignature</code> error when running snapshot tests, it's probably a problem related to git-lfs.</p>
+<p>When you have something that works, open a draft PR. You may get some helpful feedback early!
+When you feel the PR is ready to go, do a self-review of the code, and then open it for review.</p>
+<p>Don't worry about having many small commits in the PR - they will be squashed to one commit once merged.</p>
+<p>Please keep pull requests small and focused. The smaller it is, the more likely it is to get merged.</p>
+<h2 id="working-with-git-lfs">Working with git lfs<a class="headerlink" href="#working-with-git-lfs" title="Permanent link">&para;</a></h2>
+<p>We use <a href="https://git-lfs.com/">git-lfs</a> to store big files in the repository.
+Make sure you have it installed (running <code>git lfs ls-files</code> from the repository root should list some files).
+Don't forget to run <code>git lfs install</code> in this repo after installing the git-lfs binary.
+You need to add any .png images to <code>git lfs</code> (see the .gitattributes file for rules and exclusions).
+If the CI complains about lfs, try running <code>git add --renormalize .</code>.</p>
+<p>Common git-lfs commands:
+<div class="highlight"><pre><span></span><code><span class="c1"># Install git-lfs in the repo (installs git hooks)</span>
+git<span class="w"> </span>lfs<span class="w"> </span>install
+
+<span class="c1"># Move a file to git lfs</span>
+git<span class="w"> </span>lfs<span class="w"> </span>track<span class="w"> </span><span class="s2">&quot;path/to/file/or/pattern&quot;</span><span class="w"> </span><span class="c1"># OR manually edit .gitattributes</span>
+git<span class="w"> </span>add<span class="w"> </span>--renormalize<span class="w"> </span>.<span class="w"> </span><span class="c1"># Moves already added files to lfs (according to .gitattributes)</span>
+
+<span class="c1"># Move a file from lfs to regular git</span>
+git<span class="w"> </span>lfs<span class="w"> </span>untrack<span class="w"> </span><span class="s2">&quot;path/to/file/or/pattern&quot;</span><span class="w"> </span><span class="c1"># OR manually edit .gitattributes</span>
+git<span class="w"> </span>add<span class="w"> </span>--renormalize<span class="w"> </span>.<span class="w"> </span><span class="c1"># Moves already added files to regular git (according to .gitattributes)</span>
+
+<span class="c1"># Push to a contributor remote (see https://github.com/cli/cli/discussions/8794#discussioncomment-8695076)</span>
+git<span class="w"> </span>push<span class="w"> </span>--no-verify
+
+<span class="c1"># Push git lfs files to contributor remote:</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span><span class="k">$(</span>git<span class="w"> </span>branch<span class="w"> </span>--show-current<span class="k">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>--no-verify<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>--delete<span class="w"> </span><span class="k">$(</span>git<span class="w"> </span>branch<span class="w"> </span>--show-current<span class="k">)</span>
+</code></pre></div></p>
+<h2 id="pr-review">PR review<a class="headerlink" href="#pr-review" title="Permanent link">&para;</a></h2>
+<p>Most PR reviews are done by me, Emil, but I very much appreciate any help I can get reviewing PRs!</p>
+<p>It is very easy to add complexity to a project, but remember that each line of code added is code that needs to be maintained in perpetuity, so we have a high bar on what get merged!</p>
+<p>When reviewing, we look for:
+* The PR title and description should be helpful
+* Breaking changes are documented in the PR description
+* The code should be readable
+* The code should have helpful docstrings
+* The code should follow the <a href="CONTRIBUTING.md#code-style">Code Style</a></p>
+<p>Note that each new egui release have some breaking changes, so we don't mind having a few of those in a PR. Of course, we still try to avoid them if we can, and if we can't we try to first deprecate old code using the <code>#[deprecated]</code> attribute.</p>
+<h2 id="creating-an-integration-for-egui">Creating an integration for egui<a class="headerlink" href="#creating-an-integration-for-egui" title="Permanent link">&para;</a></h2>
+<p>See <a href="https://docs.rs/egui/latest/egui/#integrating-with-egui">https://docs.rs/egui/latest/egui/#integrating-with-egui</a> for how to write your own egui integration.</p>
+<p>If you make an integration for <code>egui</code> for some engine or renderer, please share it with the world!
+Make a PR to add it as a link to <a href="README.md#integrations"><code>README.md</code></a> so others can easily find it.</p>
+<h2 id="testing-the-web-viewer">Testing the web viewer<a class="headerlink" href="#testing-the-web-viewer" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Build with <code>scripts/build_demo_web.sh</code></li>
+<li>Host with <code>scripts/start_server.sh</code></li>
+<li>Open <a href="http://localhost:8765/index.html">http://localhost:8765/index.html</a></li>
+</ul>
+<h2 id="code-style">Code Style<a class="headerlink" href="#code-style" title="Permanent link">&para;</a></h2>
+<p>While using an immediate mode gui is simple, implementing one is a lot more tricky. There are many subtle corner-case you need to think through. The <code>egui</code> source code is a bit messy, partially because it is still evolving.</p>
+<ul>
+<li>Read some code before writing your own</li>
+<li>Leave the code cleaner than how you found it</li>
+<li>Write idiomatic rust</li>
+<li>Follow the <a href="https://rust-lang.github.io/api-guidelines/">Rust API Guidelines</a></li>
+<li>Add blank lines around all <code>fn</code>, <code>struct</code>, <code>enum</code>, etc</li>
+<li><code>// Comment like this.</code> and not <code>//like this</code></li>
+<li>Use <code>TODO</code> instead of <code>FIXME</code></li>
+<li>Add your github handle to the <code>TODO</code>:s you write, e.g: <code>TODO(emilk): clean this up</code></li>
+<li>Avoid <code>unsafe</code></li>
+<li>Avoid <code>unwrap</code> and any other code that can cause panics</li>
+<li>Use good names for everything</li>
+<li>Add docstrings to types, <code>struct</code> fields and all <code>pub fn</code></li>
+<li>Add some example code (doc-tests)</li>
+<li>Before making a function longer, consider adding a helper function</li>
+<li>If you are only using it in one function, put the <code>use</code> statement in that function. This improves locality, making it easier to read and move the code</li>
+<li>When importing a <code>trait</code> to use it's trait methods, do this: <code>use Trait as _;</code>. That lets the reader know why you imported it, even though it seems unused</li>
+<li>Avoid double negatives</li>
+<li>Flip <code>if !condition {} else {}</code></li>
+<li>Sets of things should be lexicographically sorted (e.g. crate dependencies in <code>Cargo.toml</code>)</li>
+<li>Put each type in their own file, unless they are trivial (e.g. a <code>struct</code> with no <code>impl</code>)</li>
+<li>Put most generic arguments first (e.g. <code>Context</code>), and most specific last</li>
+<li>Break the above rules when it makes sense</li>
+</ul>
+<h3 id="good">Good:<a class="headerlink" href="#good" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="sd">/// The name of the thing.</span>
+<span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="kp">&amp;</span><span class="kt">str</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span>
+<span class="p">}</span>
+
+<span class="k">fn</span><span class="w"> </span><span class="nf">foo</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// TODO(emilk): this can be optimized</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="bad">Bad:<a class="headerlink" href="#bad" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">//gets the name</span>
+<span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nf">get_name</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="kp">&amp;</span><span class="kt">str</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span>
+<span class="p">}</span>
+<span class="k">fn</span><span class="w"> </span><span class="nf">foo</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">//FIXME: this can be optimized</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="coordinate-system">Coordinate system<a class="headerlink" href="#coordinate-system" title="Permanent link">&para;</a></h3>
+<p>The left-top corner of the screen is <code>(0.0, 0.0)</code>,
+with <code>Vec2::X</code> increasing to the right and <code>Vec2::Y</code> increasing downwards.</p>
+<p><code>egui</code> uses logical <em>points</em> as its coordinate system.
+Those related to physical <em>pixels</em> by the <code>pixels_per_point</code> scale factor.
+For example, a high-dpi screen can have <code>pixels_per_point = 2.0</code>,
+meaning there are two physical screen pixels for each logical point.</p>
+<p>Angles are in radians, and are measured clockwise from the X-axis, which has angle=0.</p>
+<h3 id="avoid-unwrap-expect-etc">Avoid <code>unwrap</code>, <code>expect</code> etc.<a class="headerlink" href="#avoid-unwrap-expect-etc" title="Permanent link">&para;</a></h3>
+<p>The code should never panic or crash, which means that any instance of <code>unwrap</code> or <code>expect</code> is a potential time-bomb. Even if you structured your code to make them impossible, any reader will have to read the code very carefully to prove to themselves that an <code>unwrap</code> won't panic. Often you can instead rewrite your code so as to avoid it. The same goes for indexing into a slice (which will panic on out-of-bounds) - it is often preferable to use <code>.get()</code>.</p>
+<p>For instance:</p>
+<p><div class="highlight"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">is_empty</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">};</span>
+</code></pre></div>
+can be better written as:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nb">Some</span><span class="p">(</span><span class="n">first</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">first</span><span class="p">()</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2025 16:11:34 UTC">October 9, 2025</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

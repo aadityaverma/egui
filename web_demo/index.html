@@ -92,7 +92,60 @@
                 transform: rotate(360deg);
             }
         }
+        
+        /* Style the Python macro panel */
+        #macro-panel {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            height: 200px;
+            background: white;
+            padding: 10px;
+            border-top: 2px solid #ccc;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #macro-status {
+            margin-top: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        #py-macro-box {
+            flex: 1;
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        #run-macro-btn {
+            align-self: flex-start;
+            padding: 8px 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        #run-macro-btn:hover {
+            background: #45a049;
+        }
     </style>
+    
+    <!-- PyScript integration -->
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <py-config>
+      packages = ["js"]
+    </py-config>
 </head>
 
 <body>
@@ -103,6 +156,31 @@
             Loading…
         </p>
         <div class="lds-dual-ring"></div>
+    </div>
+    
+    <!-- Python Macro System Panel -->
+    <div id="macro-panel" style="display:none;">
+        <div id="macro-status">Python Macro System Ready</div>
+        <textarea id="py-macro-box" placeholder="Enter Python code here..." rows="6">print("Hello from Python macro system!")
+# You can interact with the web page using the 'js' module
+from js import document
+document.getElementById('macro-status').style.color = 'green'
+</textarea>
+        <button id="run-macro-btn" py-click="run_macro">Run Python Macro</button>
+        <py-script>
+def set_heading(text):
+    from js import document
+    document.getElementById('macro-status').innerText = text
+
+def run_macro(*args, **kwargs):
+    from js import document
+    code = document.getElementById("py-macro-box").value
+    try:
+        exec(code, globals())
+        set_heading("Macro ran successfully.")
+    except Exception as e:
+        set_heading(f"Error: {e}")
+    </py-script>
     </div>
 
     <script>
@@ -176,6 +254,9 @@
             console.debug("App started.");
             document.getElementById("center_text").innerHTML = '';
 
+            // Show the macro panel after app starts
+            document.getElementById("macro-panel").style.display = 'flex';
+            
             // Make sure the canvas is focused so it can receive keyboard events right away:
             document.getElementById("the_canvas_id").focus();
         }
@@ -200,3 +281,4 @@
 </html>
 
 <!-- Powered by egui: https://github.com/emilk/egui/ -->
+<!-- Enhanced with Python Macro System -->

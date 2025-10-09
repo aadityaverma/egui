@@ -1,0 +1,26 @@
+site_name: Egui Docs
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Changelog: changelog.md
+  - Code of Conduct: code_of_conduct.md
+  - Contributing: contributing.md
+  - Releases: releases.md
+  - QWEN: qwen.md
+
+plugins:
+  - search
+  - mkdocstrings
+  - git-revision-date-localized
+  - minify
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.highlight
