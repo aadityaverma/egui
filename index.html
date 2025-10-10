@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!-- Disable zooming: -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<head>
+    <title>egui – An immediate mode GUI written in Rust</title>
+    <style>
+        html {
+            /* Remove touch delay: */
+            touch-action: manipulation;
+        }
+
+        body {
+            /* Light mode background color for what is not covered by the egui canvas,
+            or where the egui canvas is translucent. */
+            background: #909090;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                /* Dark mode background color for what is not covered by the egui canvas,
+                or where the egui canvas is translucent. */
+                background: #404040;
+            }
+        }
+
+        /* Allow canvas to fill entire web page: */
+        html,
+        body {
+            overflow: hidden;
+            margin: 0 !important;
+            padding: 0 !important;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Make canvas fill entire document: */
+        canvas {
+            margin-right: auto;
+            margin-left: auto;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .centered {
+            margin-right: auto;
+            margin-left: auto;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #f0f0f0;
+            font-size: 24px;
+            font-family: Ubuntu-Light, Helvetica, sans-serif;
+            text-align: center;
+        }
+
+        /* ---------------------------------------------- */
+        /* Loading animation from https://loading.io/css/ */
+        .lds-dual-ring {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+        }
+
+        .lds-dual-ring:after {
+            content: " ";
+            display: block;
+            width: 24px;
+            height: 24px;
+            margin: 0px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            border-color: #fff transparent #fff transparent;
+            animation: lds-dual-ring 1.2s linear infinite;
+        }
+
+        @keyframes lds-dual-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Style the Python macro panel */
+        #macro-panel {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            height: 200px;
+            background: white;
+            padding: 10px;
+            border-top: 2px solid #ccc;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #macro-status {
+            margin-top: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        #py-macro-box {
+            flex: 1;
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        #run-macro-btn {
+            align-self: flex-start;
+            padding: 8px 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        #run-macro-btn:hover {
+            background: #45a049;
+        }
+    </style>
+    
+    <!-- PyScript integration -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css" />
+
+    <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+    <py-config>
+    {
+        "packages": ["micropip"],
+        "plugins": []
+    }
+    </py-config>
+    
+    <style>
+        /* Python Shell Panel - integrated with the egui canvas */
+        #python-shell-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            border: 1px solid #ccc;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .shell-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .shell-title {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .shell-close {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .shell-input-area {
+            margin-bottom: 10px;
+        }
+        
+        .shell-input {
+            width: 100%;
+            height: 120px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        
+        .shell-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .shell-btn {
+            flex: 1;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .run-btn {
+            background: #3498db;
+            color: white;
+        }
+        
+        .install-btn {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .clear-btn {
+            background: #95a5a6;
+            color: white;
+        }
+        
+        .shell-output {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            height: 150px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        
+        .shell-hint {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        /* Toggle button to show/hide the shell */
+        #shell-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+            padding: 12px 16px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+        
+        #shell-toggle-btn:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="the_canvas_id"></canvas>
+
+    <div class="centered" id="center_text">
+        <p style="font-size:16px">
+            Loading…
+        </p>
+        <div class="lds-dual-ring"></div>
+    </div>
+    
+    <!-- Python Macro System Panel -->
+    <div id="macro-panel" style="display:none;">
+        <div id="macro-status">Python Macro System Ready</div>
+        <textarea id="py-macro-box" placeholder="Enter Python code here..." rows="6">print("Hello from Python macro system!")
+# You can interact with the web page using the 'js' module
+from js import document
+document.getElementById('macro-status').style.color = 'green'
+</textarea>
+        <button id="run-macro-btn" py-click="run_macro">Run Python Macro</button>
+        <py-script>
+            def set_heading(text):
+                from js import document
+                document.getElementById('macro-status').innerText = text
+
+            def run_macro(*args, **kwargs):
+                from js import document
+                code = document.getElementById("py-macro-box").value
+                try:
+                    exec(code, globals())
+                    set_heading("Macro ran successfully.")
+                except Exception as e:
+                    set_heading(f"Error: {e}")
+
+            def run_python_code(*args, **kwargs):
+                from js import document
+                code = document.getElementById("python-code-input").value
+                output_el = document.getElementById("python-output")
+                try:
+                    # Capture print output
+                    import sys
+                    from io import StringIO
+                    old_stdout = sys.stdout
+                    sys.stdout = captured_output = StringIO()
+                    
+                    exec(code, globals())
+                    
+                    # Get the captured output
+                    output_str = captured_output.getvalue()
+                    sys.stdout = old_stdout
+                    
+                    # Display the output
+                    if output_str:
+                        output_el.innerText = output_str
+                    else:
+                        output_el.innerText = "Code executed successfully."
+                except Exception as e:
+                    sys.stdout = old_stdout
+                    error_msg = f"Error: {e}"
+                    output_el.innerText = error_msg
+
+            def install_package(*args, **kwargs):
+                from js import document
+                output_el = document.getElementById("python-output")
+                try:
+                    import sys
+                    from io import StringIO
+                    old_stdout = sys.stdout
+                    sys.stdout = captured_output = StringIO()
+                    
+                    # Example: install a common package
+                    import micropip
+                    micropip.install("requests")
+                    
+                    output_str = captured_output.getvalue()
+                    sys.stdout = old_stdout
+                    
+                    output_el.innerText = output_str + "\nPackage installation initiated."
+                except Exception as e:
+                    sys.stdout = old_stdout
+                    error_msg = f"Error installing package: {e}"
+                    output_el.innerText = error_msg
+        </py-script>
+    </div>
+
+
+
+    <!-- Python Shell Panel -->
+    <div id="python-shell-panel" style="display: none;">
+        <div class="shell-header">
+            <div class="shell-title">🐍 Python Shell</div>
+            <button class="shell-close" onclick="hidePythonShell()">×</button>
+        </div>
+        <div class="shell-input-area">
+            <textarea id="python-code-input" class="shell-input" placeholder="Enter Python code here...">
+# Example: interact with the page
+from js import document
+print("Hello from Python!")
+
+# You can access the egui canvas
+canvas = document.getElementById('the_canvas_id')
+if canvas:
+    print(f"Canvas dimensions: {canvas.width} x {canvas.height}")
+
+# Install packages with micropip
+# import micropip
+# await micropip.install("requests")</textarea>
+        </div>
+        <div class="shell-buttons">
+            <button class="shell-btn run-btn" py-click="run_python_code">▶ Run</button>
+            <button class="shell-btn install-btn" py-click="install_package">📦 Pkg</button>
+            <button class="shell-btn clear-btn" onclick="clearOutput()">Clr</button>
+        </div>
+        <div class="shell-output" id="python-output">Python Shell Ready...</div>
+        <div class="shell-hint">Use 'from js import document' to interact with the page</div>
+    </div>
+    
+    <!-- Toggle button to show/hide the shell -->
+    <button id="shell-toggle-btn" onclick="togglePythonShell()">🐍 Python</button>
+    
+    <!-- this is the JS generated by the `wasm-bindgen` CLI tool -->
+    <script src="./egui_demo_app.js"></script>
+
+    <script>
+        // We'll defer our execution until the wasm is ready to go.
+        // Here we tell bindgen the path to the wasm file so it can start
+        // initialization and return to us a promise when it's done.
+        console.debug("Loading wasm…");
+        wasm_bindgen({ module_or_path: "./egui_demo_app_bg.wasm" })
+            .then(on_wasm_loaded)
+            .catch(on_error);
+
+        function on_wasm_loaded() {
+            console.debug("Wasm loaded. Starting app…");
+            
+
+
+            let handle = new wasm_bindgen.WebHandle();
+
+            function check_for_panic() {
+                if (handle.has_panicked()) {
+                    console.error("The egui app has crashed");
+
+                    // The demo app already logs the panic message and callstack, but you
+                    // can access them like this if you want to show them in the html:
+                    // console.error(`${handle.panic_message()}`);
+                    // console.error(`${handle.panic_callstack()}`);
+
+                    document.getElementById("the_canvas_id").remove();
+                    document.getElementById("center_text").innerHTML = `
+                        <p>
+                            The egui app has crashed.
+                        </p>
+                        <p style="font-size:10px" align="left">
+                            ${handle.panic_message()}
+                        </p>
+                        <p style="font-size:14px">
+                            See the console for details.
+                        </p>
+                        <p style="font-size:14px">
+                            Reload the page to try again.
+                        </p>`;
+                } else {
+                    let delay_ms = 1000;
+                    setTimeout(check_for_panic, delay_ms);
+                }
+            }
+
+            check_for_panic();
+
+            handle.start(document.getElementById("the_canvas_id")).then(on_app_started).catch(on_error);
+        }
+
+        function on_app_started(handle) {
+            // Call `handle.destroy()` to stop. Uncomment to quick result:
+            // setTimeout(() => { handle.destroy(); handle.free() }, 2000)
+
+            console.debug("App started.");
+            document.getElementById("center_text").innerHTML = '';
+
+            // Show the macro panel after app starts
+            document.getElementById("macro-panel").style.display = 'flex';
+            
+            // Make sure the canvas is focused so it can receive keyboard events right away:
+            document.getElementById("the_canvas_id").focus();
+        }
+
+        function on_error(error) {
+            console.error("Failed to start: " + error);
+            document.getElementById("the_canvas_id").remove();
+            document.getElementById("center_text").innerHTML = `
+                <p>
+                    An error occurred during loading:
+                </p>
+                <p style="font-family:Courier New">
+                    ${error}
+                </p>
+                <p style="font-size:14px">
+                    Make sure you use a modern browser with WebGL and WASM enabled.
+                </p>`;
+        }
+        
+        function togglePythonShell() {
+            const panel = document.getElementById('python-shell-panel');
+            const btn = document.getElementById('shell-toggle-btn');
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                panel.style.display = 'block';
+                btn.innerText = 'Hide Python';
+            } else {
+                panel.style.display = 'none';
+                btn.innerText = '🐍 Python';
+            }
+        }
+        
+        function hidePythonShell() {
+            const panel = document.getElementById('python-shell-panel');
+            const btn = document.getElementById('shell-toggle-btn');
+            panel.style.display = 'none';
+            btn.innerText = '🐍 Python';
+        }
+        
+        function clearOutput() {
+            document.getElementById('python-output').innerText = 'Output cleared.';
+        }
+    </script>
+</body>
+
+</html>
+
+<!-- Powered by egui: https://github.com/emilk/egui/ -->
+<!-- Enhanced with Python Macro System -->
