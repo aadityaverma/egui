@@ -142,13 +142,19 @@
     
     <!-- PyScript integration -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css" />
-
+    <!-- WebAssembly compatibility fix for PyScript -->
+    <script>
+        // Make sure WebAssembly.instantiateStreaming is available before PyScript loads
+        if (!WebAssembly.instantiateStreaming) {
+            WebAssembly.instantiateStreaming = async (resp, importObject) => {
+                const source = await (await resp).arrayBuffer();
+                return await WebAssembly.instantiate(source, importObject);
+            };
+        }
+    </script>
     <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
     <py-config>
-    {
-        "packages": ["micropip"],
-        "plugins": []
-    }
+      packages = ["js", "micropip"]
     </py-config>
     
     <style>
@@ -301,71 +307,83 @@ document.getElementById('macro-status').style.color = 'green'
 </textarea>
         <button id="run-macro-btn" py-click="run_macro">Run Python Macro</button>
         <py-script>
-            def set_heading(text):
-                from js import document
-                document.getElementById('macro-status').innerText = text
+function set_heading(text) {
+    from js import document
+    document.getElementById('macro-status').innerText = text
+}
 
-            def run_macro(*args, **kwargs):
-                from js import document
-                code = document.getElementById("py-macro-box").value
-                try:
-                    exec(code, globals())
-                    set_heading("Macro ran successfully.")
-                except Exception as e:
-                    set_heading(f"Error: {e}")
+function run_macro(*args, **kwargs) {
+    from js import document
+    code = document.getElementById("py-macro-box").value
+    try {
+        exec(code, globals())
+        set_heading("Macro ran successfully.")
+    } except Exception as e:
+        set_heading(f"Error: {e}")
 
-            def run_python_code(*args, **kwargs):
-                from js import document
-                code = document.getElementById("python-code-input").value
-                output_el = document.getElementById("python-output")
-                try:
-                    # Capture print output
-                    import sys
-                    from io import StringIO
-                    old_stdout = sys.stdout
-                    sys.stdout = captured_output = StringIO()
-                    
-                    exec(code, globals())
-                    
-                    # Get the captured output
-                    output_str = captured_output.getvalue()
-                    sys.stdout = old_stdout
-                    
-                    # Display the output
-                    if output_str:
-                        output_el.innerText = output_str
-                    else:
-                        output_el.innerText = "Code executed successfully."
-                except Exception as e:
-                    sys.stdout = old_stdout
-                    error_msg = f"Error: {e}"
-                    output_el.innerText = error_msg
+function run_python_code(*args, **kwargs) {
+    from js import document
+    code = document.getElementById("python-code-input").value
+    output_el = document.getElementById("python-output")
+    try {
+        # Capture print output
+        import sys
+        from io import StringIO
+        old_stdout = sys.stdout
+        sys.stdout = captured_output = StringIO()
+        
+        exec(code, globals())
+        
+        # Get the captured output
+        output_str = captured_output.getvalue()
+        sys.stdout = old_stdout
+        
+        # Display the output
+        if output_str:
+            output_el.innerText = output_str
+        else:
+            output_el.innerText = "Code executed successfully."
+    } except Exception as e:
+        sys.stdout = old_stdout
+        error_msg = f"Error: {e}"
+        output_el.innerText = error_msg
 
-            def install_package(*args, **kwargs):
-                from js import document
-                output_el = document.getElementById("python-output")
-                try:
-                    import sys
-                    from io import StringIO
-                    old_stdout = sys.stdout
-                    sys.stdout = captured_output = StringIO()
-                    
-                    # Example: install a common package
-                    import micropip
-                    micropip.install("requests")
-                    
-                    output_str = captured_output.getvalue()
-                    sys.stdout = old_stdout
-                    
-                    output_el.innerText = output_str + "\nPackage installation initiated."
-                except Exception as e:
-                    sys.stdout = old_stdout
-                    error_msg = f"Error installing package: {e}"
-                    output_el.innerText = error_msg
-        </py-script>
+function install_package(*args, **kwargs) {
+    from js import document
+    output_el = document.getElementById("python-output")
+    try {
+        import sys
+        from io import StringIO
+        old_stdout = sys.stdout
+        sys.stdout = captured_output = StringIO()
+        
+        # Example: install a common package
+        import micropip
+        micropip.install("requests")  # You can change this to any Pyodide-compatible package
+        
+        output_str = captured_output.getvalue()
+        sys.stdout = old_stdout
+        
+        output_el.innerText = output_str + "\nPackage installation initiated."
+    } except Exception as e:
+        sys.stdout = old_stdout
+        error_msg = f"Error installing package: {e}"
+        output_el.innerText = error_msg
+    </py-script>
     </div>
 
-
+    <script>
+        // The `--no-modules`-generated JS from `wasm-bindgen` attempts to use
+        // `WebAssembly.instantiateStreaming` to instantiate the wasm module,
+        // but this doesn't work with `file://` urls. This example is frequently
+        // viewed by simply opening `index.html` in a browser (with a `file://`
+        // url), so it would fail if we were to call this function!
+        //
+        // Work around this for now by deleting the function to ensure that the
+        // `no_modules.js` script doesn't have access to it. You won't need this
+        // hack when deploying over HTTP.
+        delete WebAssembly.instantiateStreaming;
+    </script>
 
     <!-- Python Shell Panel -->
     <div id="python-shell-panel" style="display: none;">
@@ -408,14 +426,12 @@ if canvas:
         // Here we tell bindgen the path to the wasm file so it can start
         // initialization and return to us a promise when it's done.
         console.debug("Loading wasm…");
-        wasm_bindgen({ module_or_path: "./egui_demo_app_bg.wasm" })
+        wasm_bindgen("./egui_demo_app_bg.wasm")
             .then(on_wasm_loaded)
             .catch(on_error);
 
         function on_wasm_loaded() {
             console.debug("Wasm loaded. Starting app…");
-            
-
 
             let handle = new wasm_bindgen.WebHandle();
 
