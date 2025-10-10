@@ -3,7 +3,7 @@
 //! This demonstrates how to create an interactive widget that allows Python code execution
 //! within an egui application. The PyScript integration runs Python in the browser.
 
-use egui::{ScrollArea, TextEdit, TextStyle, Ui};
+use egui::{Context, ScrollArea, TextEdit, TextStyle, Ui};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
@@ -37,6 +37,8 @@ impl Default for PyScriptShell {
 
 impl PyScriptShell {
     pub fn ui(&mut self, ui: &mut Ui) {
+        let pyodide_ready = self.is_ready(ui.ctx());
+
         ui.horizontal(|ui| {
             ui.heading("🐍 Python Shell");
             ui.separator();
@@ -61,22 +63,25 @@ impl PyScriptShell {
 
         // Run button
         ui.horizontal(|ui| {
-            if ui.button("▶ Run Python Code").clicked() {
-                self.run_code();
-            }
+            ui.add_enabled_ui(pyodide_ready, |ui| {
+                if ui.button("▶ Run Python Code").clicked() {
+                    self.run_code();
+                }
+            });
             
-            if ui.button("📦 Install Package").clicked() {
-                if let Some(window) = web_sys::window() {
-                    // Try using Pyodide if available
-                    if let Ok(pyodide) = js_sys::Reflect::get(&window, &"pyodide".into()) {
-                        if pyodide.is_object() {
-                            // Try to run the Python package installation code directly with pyodide
-                            if let Ok(run_python) = js_sys::Reflect::get(&pyodide, &"runPython".into()) {
-                                if let Some(run_python_fn) = run_python.dyn_ref::<js_sys::Function>() {
-                                    let install_code = "import micropip\nawait micropip.install(\"requests\")\nprint(\"Package installed!\")";
-                                    
-                                    // Execute the code with a try/catch to capture output
-                                    let code_with_capture = format!(r#"
+            ui.add_enabled_ui(pyodide_ready, |ui| {
+                if ui.button("📦 Install Package").clicked() {
+                    if let Some(window) = web_sys::window() {
+                        // Try using Pyodide if available
+                        if let Ok(pyodide) = js_sys::Reflect::get(&window, &"pyodide".into()) {
+                            if pyodide.is_object() {
+                                // Try to run the Python package installation code directly with pyodide
+                                if let Ok(run_python) = js_sys::Reflect::get(&pyodide, &"runPython".into()) {
+                                    if let Some(run_python_fn) = run_python.dyn_ref::<js_sys::Function>() {
+                                        let install_code = "import micropip\nawait micropip.install(\"requests\")\nprint(\"Package installed!\")";
+                                        
+                                        // Execute the code with a try/catch to capture output
+                                        let code_with_capture = format!(r#"\
 import sys
 from io import StringIO
 
@@ -102,42 +107,47 @@ from js import document
 output_element = document.getElementById("python-output")
 if output_element:
     output_element.innerText = output
-"#, install_code.replace("'", "\\'"));
-                                    
-                                    let result = run_python_fn.call1(&pyodide, &code_with_capture.into());
-                                    if let Ok(promise) = result {
-                                        let future = JsFuture::from(promise.dyn_into::<js_sys::Promise>().unwrap());
-                                        wasm_bindgen_futures::spawn_local(async move {
-                                            if let Err(e) = future.await {
-                                                log::error!("Failed to install package with pyodide: {:?}", e);
-                                            }
-                                        });
+"#, install_code.replace("'", "\'" ));
+                                        
+                                        let result = run_python_fn.call1(&pyodide, &code_with_capture.into());
+                                        if let Ok(promise) = result {
+                                            let future = JsFuture::from(promise.dyn_into::<js_sys::Promise>().unwrap());
+                                            wasm_bindgen_futures::spawn_local(async move {
+                                                if let Err(e) = future.await {
+                                                    log::error!("Failed to install package with pyodide: {:?}", e);
+                                                }
+                                            });
+                                        } else {
+                                            log::error!("Failed to call runPython");
+                                        }
                                     } else {
-                                        log::error!("Failed to call runPython");
+                                        log::error!("pyodide.runPython is not a function");
                                     }
                                 } else {
-                                    log::error!("pyodide.runPython is not a function");
+                                    log::error!("pyodide.runPython not available");
                                 }
                             } else {
-                                log::error!("pyodide.runPython not available");
+                                log::error!("pyodide is not an object");
                             }
                         } else {
-                            log::error!("pyodide is not an object");
-                        }
-                    } else {
-                        // If pyodide is not available, just write the code to the textarea
-                        log::warn!("Pyodide not available, setting code in textarea...");
-                        if let Some(document) = window.document() {
-                            if let Some(code_input) = document.get_element_by_id("python-code-input") {
-                                if let Ok(code_input_element) = code_input.dyn_into::<web_sys::HtmlTextAreaElement>() {
-                                    code_input_element.set_value("import micropip\nawait micropip.install(\"requests\")\nprint(\"Package installed!\")");
+                            // If pyodide is not available, just write the code to the textarea
+                            log::warn!("Pyodide not available, setting code in textarea...");
+                            if let Some(document) = window.document() {
+                                if let Some(code_input) = document.get_element_by_id("python-code-input") {
+                                    if let Ok(code_input_element) = code_input.dyn_into::<web_sys::HtmlTextAreaElement>() {
+                                        code_input_element.set_value("import micropip\nawait micropip.install(\"requests\")\nprint(\"Package installed!\")");
+                                    }
                                 }
                             }
                         }
+                    } else {
+                        log::error!("no global `window` exists");
                     }
-                } else {
-                    log::error!("no global `window` exists");
                 }
+            });
+
+            if !pyodide_ready {
+                ui.label("PyScript is loading...");
             }
             
             ui.separator();
@@ -154,7 +164,7 @@ if output_element:
             }
             
             if ui.button("📊 Math Example").clicked() {
-                self.code = r#"import math
+                self.code = r###"import math
 
 # Calculate and print squares
 numbers = [1, 2, 3, 4, 5]
@@ -170,12 +180,12 @@ print(f"Square roots: {sqrt_numbers}")
 # Pi and e
 print(f"Pi is approximately {math.pi:.4f}")
 print(f"E is approximately {math.e:.4f}")
-"#.to_string();
+"###.to_string();
                 self.run_code();
             }
             
             if ui.button("🌐 DOM Access").clicked() {
-                self.code = r#"from js import document
+                self.code = r###"from js import document
 
 # Access the page title
 title = document.title
@@ -193,7 +203,7 @@ if canvas:
     print(f"Canvas height: {canvas.height}")
 else:
     print("Canvas not found")
-"#.to_string();
+"###.to_string();
                 self.run_code();
             }
         });
@@ -231,6 +241,18 @@ else:
             });
     }
 
+    fn is_ready(&self, ctx: &Context) -> bool {
+        if let Some(window) = web_sys::window() {
+            if let Ok(pyodide) = js_sys::Reflect::get(&window, &"pyodide".into()) {
+                if pyodide.is_object() {
+                    return true;
+                }
+            }
+        }
+        ctx.request_repaint();
+        false
+    }
+
     fn run_code(&mut self) {
         if let Some(window) = web_sys::window() {
             // Set the code in the HTML textarea that PyScript will execute
@@ -247,7 +269,7 @@ else:
                                 if let Ok(run_python) = js_sys::Reflect::get(&pyodide, &"runPython".into()) {
                                     if let Some(run_python_fn) = run_python.dyn_ref::<js_sys::Function>() {
                                         // Execute the code with a try/catch to capture output
-                                        let code_with_capture = format!(r#"
+                                        let code_with_capture = format!(r#"\
 import sys
 from io import StringIO
 
@@ -273,7 +295,7 @@ from js import document
 output_element = document.getElementById("python-output")
 if output_element:
     output_element.innerText = output
-"#, self.code.replace("'", "\\'"));
+"#, self.code.replace("'", "\'" ));
                                         
                                         let result = run_python_fn.call1(&pyodide, &code_with_capture.into());
                                         if let Ok(promise) = result {

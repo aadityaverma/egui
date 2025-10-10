@@ -142,13 +142,7 @@
     
     <!-- PyScript integration -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css" />
-    <script>
-        // Store WebAssembly.instantiateStreaming before we delete it
-        // (it will be temporarily deleted for egui, then restored for PyScript)
-        if (WebAssembly.instantiateStreaming) {
-            window.originalInstantiateStreaming = WebAssembly.instantiateStreaming;
-        }
-    </script>
+
     <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
     <py-config>
     </py-config>
@@ -368,16 +362,7 @@ function install_package(*args, **kwargs) {
     </py-script>
     </div>
 
-    <script>
-        // The `--no-modules`-generated JS from `wasm-bindgen` attempts to use
-        // `WebAssembly.instantiateStreaming` to instantiate the wasm module,
-        // but this doesn't work with `file://` urls. This example is frequently
-        // viewed by simply opening `index.html` in a browser (with a `file://`
-        // url), so it would fail if we were to call this function!
-        //
-        // Temporarily delete it so egui uses the fallback. We'll restore it after egui loads.
-        delete WebAssembly.instantiateStreaming;
-    </script>
+
 
     <!-- Python Shell Panel -->
     <div id="python-shell-panel" style="display: none;">
@@ -427,11 +412,7 @@ if canvas:
         function on_wasm_loaded() {
             console.debug("Wasm loaded. Starting app…");
             
-            // Restore WebAssembly.instantiateStreaming for PyScript now that egui has loaded
-            if (window.originalInstantiateStreaming && !WebAssembly.instantiateStreaming) {
-                WebAssembly.instantiateStreaming = window.originalInstantiateStreaming;
-                console.debug("Restored WebAssembly.instantiateStreaming for PyScript");
-            }
+
 
             let handle = new wasm_bindgen.WebHandle();
 
