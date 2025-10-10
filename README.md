@@ -381,3 +381,27 @@ Default fonts:
 egui development is sponsored by [Rerun](https://www.rerun.io/), a startup building<br>
 an SDK for visualizing streams of multimodal data.
 </div>
+
+
+## WASM Deployment with Trunk
+
+This project is configured to be built and served as a WebAssembly application using Trunk.
+
+### Development
+
+To run the application in development mode with live reloading:
+```bash
+trunk serve
+```
+
+Navigate to `http://127.0.0.1:8080` in your browser.
+
+### Production
+
+To build the application for production:
+```bash
+trunk build --release
+```
+
+The optimized application will be available in the `dist` directory.
+
