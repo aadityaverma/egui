@@ -67,40 +67,51 @@ pub struct DemoGroups {
     tests: DemoGroup,
 }
 
+fn create_demos() -> Vec<Box<dyn Demo>> {
+    let mut demos: Vec<Box<dyn Demo>> = vec![
+        Box::<super::paint_bezier::PaintBezier>::default(),
+        Box::<super::code_editor::CodeEditor>::default(),
+        Box::<super::code_example::CodeExample>::default(),
+        Box::<super::dancing_strings::DancingStrings>::default(),
+        Box::<super::drag_and_drop::DragAndDropDemo>::default(),
+        Box::<super::extra_viewport::ExtraViewport>::default(),
+        Box::<super::font_book::FontBook>::default(),
+        Box::<super::frame_demo::FrameDemo>::default(),
+        Box::<super::highlighting::Highlighting>::default(),
+        Box::<super::interactive_container::InteractiveContainerDemo>::default(),
+        Box::<super::MiscDemoWindow>::default(),
+        Box::<super::modals::Modals>::default(),
+        Box::<super::multi_touch::MultiTouch>::default(),
+        Box::<super::painting::Painting>::default(),
+        Box::<super::panels::Panels>::default(),
+        Box::<super::popups::PopupsDemo>::default(),
+        Box::<super::scene::SceneDemo>::default(),
+        Box::<super::screenshot::Screenshot>::default(),
+        Box::<super::scrolling::Scrolling>::default(),
+        Box::<super::sliders::Sliders>::default(),
+        Box::<super::strip_demo::StripDemo>::default(),
+        Box::<super::table_demo::TableDemo>::default(),
+        Box::<super::text_edit::TextEditDemo>::default(),
+        Box::<super::text_layout::TextLayoutDemo>::default(),
+        Box::<super::tooltips::Tooltips>::default(),
+        Box::<super::undo_redo::UndoRedoDemo>::default(),
+        Box::<super::widget_gallery::WidgetGallery>::default(),
+        Box::<super::window_options::WindowOptions>::default(),
+    ];
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        demos.push(Box::new(super::pyscript_shell::PyScriptShell::default()));
+    }
+
+    demos
+}
+
 impl Default for DemoGroups {
     fn default() -> Self {
         Self {
             about: About::default(),
-            demos: DemoGroup::new(vec![
-                Box::<super::paint_bezier::PaintBezier>::default(),
-                Box::<super::code_editor::CodeEditor>::default(),
-                Box::<super::code_example::CodeExample>::default(),
-                Box::<super::dancing_strings::DancingStrings>::default(),
-                Box::<super::drag_and_drop::DragAndDropDemo>::default(),
-                Box::<super::extra_viewport::ExtraViewport>::default(),
-                Box::<super::font_book::FontBook>::default(),
-                Box::<super::frame_demo::FrameDemo>::default(),
-                Box::<super::highlighting::Highlighting>::default(),
-                Box::<super::interactive_container::InteractiveContainerDemo>::default(),
-                Box::<super::MiscDemoWindow>::default(),
-                Box::<super::modals::Modals>::default(),
-                Box::<super::multi_touch::MultiTouch>::default(),
-                Box::<super::painting::Painting>::default(),
-                Box::<super::panels::Panels>::default(),
-                Box::<super::popups::PopupsDemo>::default(),
-                Box::<super::scene::SceneDemo>::default(),
-                Box::<super::screenshot::Screenshot>::default(),
-                Box::<super::scrolling::Scrolling>::default(),
-                Box::<super::sliders::Sliders>::default(),
-                Box::<super::strip_demo::StripDemo>::default(),
-                Box::<super::table_demo::TableDemo>::default(),
-                Box::<super::text_edit::TextEditDemo>::default(),
-                Box::<super::text_layout::TextLayoutDemo>::default(),
-                Box::<super::tooltips::Tooltips>::default(),
-                Box::<super::undo_redo::UndoRedoDemo>::default(),
-                Box::<super::widget_gallery::WidgetGallery>::default(),
-                Box::<super::window_options::WindowOptions>::default(),
-            ]),
+            demos: DemoGroup::new(create_demos()),
             tests: DemoGroup::new(vec![
                 Box::<super::tests::ClipboardTest>::default(),
                 Box::<super::tests::CursorTest>::default(),

@@ -52,6 +52,12 @@ chrono = { version = "0.4", optional = true, features = ["js-sys", "wasmbind"] }
 ## Enable this when generating docs.
 document-features = { workspace = true, optional = true }
 serde = { workspace = true, optional = true }
+wasm-bindgen = "0.2"
+lazy_static = "1.4.0"
+web-sys = { version = "0.3", features = ["Document", "HtmlElement", "HtmlTextAreaElement", "Window", "Element", "Node", "NodeList"] }
+js-sys = "0.3"
+log = "0.4"
+wasm-bindgen-futures = "0.4"
 
 
 [dev-dependencies]

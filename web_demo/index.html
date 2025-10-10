@@ -141,11 +141,146 @@
     </style>
     
     <!-- PyScript integration -->
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css" />
+    <script>
+        // Store WebAssembly.instantiateStreaming before we delete it
+        // (it will be temporarily deleted for egui, then restored for PyScript)
+        if (WebAssembly.instantiateStreaming) {
+            window.originalInstantiateStreaming = WebAssembly.instantiateStreaming;
+        }
+    </script>
+    <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
     <py-config>
-      packages = ["js"]
     </py-config>
+    
+    <style>
+        /* Python Shell Panel - integrated with the egui canvas */
+        #python-shell-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            border: 1px solid #ccc;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .shell-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .shell-title {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .shell-close {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .shell-input-area {
+            margin-bottom: 10px;
+        }
+        
+        .shell-input {
+            width: 100%;
+            height: 120px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        
+        .shell-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .shell-btn {
+            flex: 1;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .run-btn {
+            background: #3498db;
+            color: white;
+        }
+        
+        .install-btn {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .clear-btn {
+            background: #95a5a6;
+            color: white;
+        }
+        
+        .shell-output {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            height: 150px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        
+        .shell-hint {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        /* Toggle button to show/hide the shell */
+        #shell-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+            padding: 12px 16px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+        
+        #shell-toggle-btn:hover {
+            background: #2980b9;
+        }
+    </style>
 </head>
 
 <body>
@@ -168,18 +303,68 @@ document.getElementById('macro-status').style.color = 'green'
 </textarea>
         <button id="run-macro-btn" py-click="run_macro">Run Python Macro</button>
         <py-script>
-def set_heading(text):
+function set_heading(text) {
     from js import document
     document.getElementById('macro-status').innerText = text
+}
 
-def run_macro(*args, **kwargs):
+function run_macro(*args, **kwargs) {
     from js import document
     code = document.getElementById("py-macro-box").value
-    try:
+    try {
         exec(code, globals())
         set_heading("Macro ran successfully.")
-    except Exception as e:
+    } except Exception as e:
         set_heading(f"Error: {e}")
+
+function run_python_code(*args, **kwargs) {
+    from js import document
+    code = document.getElementById("python-code-input").value
+    output_el = document.getElementById("python-output")
+    try {
+        # Capture print output
+        import sys
+        from io import StringIO
+        old_stdout = sys.stdout
+        sys.stdout = captured_output = StringIO()
+        
+        exec(code, globals())
+        
+        # Get the captured output
+        output_str = captured_output.getvalue()
+        sys.stdout = old_stdout
+        
+        # Display the output
+        if output_str:
+            output_el.innerText = output_str
+        else:
+            output_el.innerText = "Code executed successfully."
+    } except Exception as e:
+        sys.stdout = old_stdout
+        error_msg = f"Error: {e}"
+        output_el.innerText = error_msg
+
+function install_package(*args, **kwargs) {
+    from js import document
+    output_el = document.getElementById("python-output")
+    try {
+        import sys
+        from io import StringIO
+        old_stdout = sys.stdout
+        sys.stdout = captured_output = StringIO()
+        
+        # Example: install a common package
+        import micropip
+        micropip.install("requests")  # You can change this to any Pyodide-compatible package
+        
+        output_str = captured_output.getvalue()
+        sys.stdout = old_stdout
+        
+        output_el.innerText = output_str + "\nPackage installation initiated."
+    } except Exception as e:
+        sys.stdout = old_stdout
+        error_msg = f"Error installing package: {e}"
+        output_el.innerText = error_msg
     </py-script>
     </div>
 
@@ -190,12 +375,43 @@ def run_macro(*args, **kwargs):
         // viewed by simply opening `index.html` in a browser (with a `file://`
         // url), so it would fail if we were to call this function!
         //
-        // Work around this for now by deleting the function to ensure that the
-        // `no_modules.js` script doesn't have access to it. You won't need this
-        // hack when deploying over HTTP.
+        // Temporarily delete it so egui uses the fallback. We'll restore it after egui loads.
         delete WebAssembly.instantiateStreaming;
     </script>
 
+    <!-- Python Shell Panel -->
+    <div id="python-shell-panel" style="display: none;">
+        <div class="shell-header">
+            <div class="shell-title">🐍 Python Shell</div>
+            <button class="shell-close" onclick="hidePythonShell()">×</button>
+        </div>
+        <div class="shell-input-area">
+            <textarea id="python-code-input" class="shell-input" placeholder="Enter Python code here...">
+# Example: interact with the page
+from js import document
+print("Hello from Python!")
+
+# You can access the egui canvas
+canvas = document.getElementById('the_canvas_id')
+if canvas:
+    print(f"Canvas dimensions: {canvas.width} x {canvas.height}")
+
+# Install packages with micropip
+# import micropip
+# await micropip.install("requests")</textarea>
+        </div>
+        <div class="shell-buttons">
+            <button class="shell-btn run-btn" py-click="run_python_code">▶ Run</button>
+            <button class="shell-btn install-btn" py-click="install_package">📦 Pkg</button>
+            <button class="shell-btn clear-btn" onclick="clearOutput()">Clr</button>
+        </div>
+        <div class="shell-output" id="python-output">Python Shell Ready...</div>
+        <div class="shell-hint">Use 'from js import document' to interact with the page</div>
+    </div>
+    
+    <!-- Toggle button to show/hide the shell -->
+    <button id="shell-toggle-btn" onclick="togglePythonShell()">🐍 Python</button>
+    
     <!-- this is the JS generated by the `wasm-bindgen` CLI tool -->
     <script src="./egui_demo_app.js"></script>
 
@@ -204,12 +420,18 @@ def run_macro(*args, **kwargs):
         // Here we tell bindgen the path to the wasm file so it can start
         // initialization and return to us a promise when it's done.
         console.debug("Loading wasm…");
-        wasm_bindgen("./egui_demo_app_bg.wasm")
+        wasm_bindgen({ module_or_path: "./egui_demo_app_bg.wasm" })
             .then(on_wasm_loaded)
             .catch(on_error);
 
         function on_wasm_loaded() {
             console.debug("Wasm loaded. Starting app…");
+            
+            // Restore WebAssembly.instantiateStreaming for PyScript now that egui has loaded
+            if (window.originalInstantiateStreaming && !WebAssembly.instantiateStreaming) {
+                WebAssembly.instantiateStreaming = window.originalInstantiateStreaming;
+                console.debug("Restored WebAssembly.instantiateStreaming for PyScript");
+            }
 
             let handle = new wasm_bindgen.WebHandle();
 
@@ -249,7 +471,7 @@ def run_macro(*args, **kwargs):
 
         function on_app_started(handle) {
             // Call `handle.destroy()` to stop. Uncomment to quick result:
-            // setTimeout(() => { handle.destroy(); handle.free()) }, 2000)
+            // setTimeout(() => { handle.destroy(); handle.free() }, 2000)
 
             console.debug("App started.");
             document.getElementById("center_text").innerHTML = '';
@@ -274,6 +496,29 @@ def run_macro(*args, **kwargs):
                 <p style="font-size:14px">
                     Make sure you use a modern browser with WebGL and WASM enabled.
                 </p>`;
+        }
+        
+        function togglePythonShell() {
+            const panel = document.getElementById('python-shell-panel');
+            const btn = document.getElementById('shell-toggle-btn');
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                panel.style.display = 'block';
+                btn.innerText = 'Hide Python';
+            } else {
+                panel.style.display = 'none';
+                btn.innerText = '🐍 Python';
+            }
+        }
+        
+        function hidePythonShell() {
+            const panel = document.getElementById('python-shell-panel');
+            const btn = document.getElementById('shell-toggle-btn');
+            panel.style.display = 'none';
+            btn.innerText = '🐍 Python';
+        }
+        
+        function clearOutput() {
+            document.getElementById('python-output').innerText = 'Output cleared.';
         }
     </script>
 </body>

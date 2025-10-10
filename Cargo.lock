@@ -1363,10 +1363,16 @@ dependencies = [
  "egui_extras",
  "egui_kittest",
  "image",
+ "js-sys",
+ "lazy_static",
+ "log",
  "mimalloc",
  "rand",
  "serde",
  "unicode_names2",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
 ]
 
 [[package]]

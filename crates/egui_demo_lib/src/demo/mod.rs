@@ -18,6 +18,8 @@ pub mod interactive_container;
 pub mod misc_demo_window;
 pub mod modals;
 pub mod multi_touch;
+#[cfg(target_arch = "wasm32")]
+pub mod pyscript_shell;
 pub mod paint_bezier;
 pub mod painting;
 pub mod panels;
