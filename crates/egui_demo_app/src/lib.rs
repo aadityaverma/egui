@@ -4,8 +4,10 @@
 mod apps;
 mod backend_panel;
 mod frame_history;
+mod pyscript;
 mod wrap_app;
 
+pub use pyscript::PyScriptUi;
 pub use wrap_app::{Anchor, WrapApp};
 
 /// Time of day as seconds since midnight. Used for clock in demo app.

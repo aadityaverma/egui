@@ -1338,6 +1338,7 @@ dependencies = [
  "ehttp",
  "env_logger",
  "image",
+ "js-sys",
  "log",
  "mimalloc",
  "poll-promise",

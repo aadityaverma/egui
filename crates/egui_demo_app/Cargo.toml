@@ -96,9 +96,18 @@ rfd = { version = "0.15.3", optional = true }
 
 # web:
 [target.'cfg(target_arch = "wasm32")'.dependencies]
+js-sys = "0.3"
 wasm-bindgen = "=0.2.100"
 wasm-bindgen-futures.workspace = true
-web-sys.workspace = true
+web-sys = { workspace = true, features = [
+  "console",
+  "Document",
+  "Element",
+  "HtmlElement",
+  "HtmlTextAreaElement",
+  "Node",
+  "Window",
+] }
 
 [dev-dependencies]
 egui_kittest = { workspace = true, features = ["eframe", "snapshot", "wgpu"] }

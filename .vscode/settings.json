@@ -38,6 +38,12 @@
         // specified in rust-toolchain.
         "RUSTUP_TOOLCHAIN": "stable"
     },
+    "chat.mcp.assisted.nuget.enabled": true,
+    "chat.mcp.gallery.enabled": true,
+    "chat.mcp.serverSampling": {},
+    "chat.mcp.discovery.enabled": {
+        "claude-desktop": true
+    },
     // Uncomment the following options and restart rust-analyzer to get it to check code behind `cfg(target_arch=wasm32)`.
     // Don't forget to put it in a comment again before committing.
     // "rust-analyzer.cargo.target": "wasm32-unknown-unknown",
